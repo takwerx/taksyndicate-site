@@ -41,9 +41,13 @@ try {
   if (!Array.isArray(accounts)) keepOld('accounts.json is not an array');
 } catch (e) { keepOld(String(e.message || e)); }
 
-// Our own account is always listed, even if it is not in accounts.json.
-if (!accounts.some((a) => a.account?.toLowerCase() === 'takwerx')) {
-  accounts.push({ account: 'takwerx', name: 'TAKwerx', category: 'TAK infrastructure and ATAK plugins', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' });
+// Accounts that are always listed, even if they are not in accounts.json yet.
+const PINNED = [
+  { account: 'takwerx', name: 'TAKwerx', category: 'TAK infrastructure and ATAK plugins', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' },
+  { account: 'ValleyTacticalSolutions', name: 'Valley Tactical Solutions', category: 'CloudTAK plugins and ETLs', url: 'https://github.com/ValleyTacticalSolutions', avatar: 'https://avatars.githubusercontent.com/u/42650546' },
+];
+for (const p of PINNED) {
+  if (!accounts.some((a) => a.account?.toLowerCase() === p.account.toLowerCase())) accounts.push(p);
 }
 
 // iTAK has no plugins, so drop it from the plugin category.
