@@ -6,5 +6,7 @@ dist/
 public/manuals/
 public/plugin-assets/
 src/data/plugins.json
+src/data/community.json
+public/community-avatars/
 .dev.vars
 .wrangler/

@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import data from '../data/community.json';
+// [avatar, name, category, GitHub profile url]
+const accounts = data.accounts;
+---
+<Base title="Community TAK Projects" description="People and organizations building open-source projects on the TAK ecosystem.">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Community TAK Projects</h1>
+        <p>Open-source TAK projects on GitHub. People and organizations building plugins, servers, bridges, libraries, maps and guides. Each tile links to their GitHub profile. Listed to help you find your way, not as endorsements.</p>
+      </div>
+      {accounts.length === 0 ? (
+        <p class="section-note">The list is not available right now. Check back soon.</p>
+      ) : (
+        <div class="lk-grid">
+          {accounts.map((a) => (
+            <a class="lk-card lk-yt" href={a.url} target="_blank" rel="noopener">
+              <span class="lk-logo">{a.avatar && <img src={a.avatar} alt={`${a.name} avatar`} loading="lazy" />}</span>
+              <span class="lk-plate"><strong>{a.name}</strong><small>{a.category}</small></span>
+            </a>
+          ))}
+        </div>
+      )}
+      <p class="section-note">TAK and the TAK products are from the TAK Product Center. This list is a community effort and is not affiliated with or endorsed by tak.gov.</p>
+    </div>
+  </main>
+</Base>

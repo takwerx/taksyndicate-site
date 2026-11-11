@@ -27,6 +27,7 @@ jobs:
     environment: production
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      COMMUNITY_TOKEN: ${{ secrets.COMMUNITY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 

@@ -8,8 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "sync:plugins": "node scripts/sync-plugins.mjs",
-    "predev": "test -f src/data/plugins.json || node scripts/sync-plugins.mjs",
-    "prebuild": "node scripts/sync-plugins.mjs"
+    "sync:community": "node scripts/sync-community.mjs",
+    "predev": "test -f src/data/plugins.json || node scripts/sync-plugins.mjs; test -f src/data/community.json || node scripts/sync-community.mjs",
+    "prebuild": "node scripts/sync-plugins.mjs && node scripts/sync-community.mjs"
   },
   "keywords": [],
   "author": "",
