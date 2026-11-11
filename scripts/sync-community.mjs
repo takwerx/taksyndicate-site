@@ -41,6 +41,11 @@ try {
   if (!Array.isArray(accounts)) keepOld('accounts.json is not an array');
 } catch (e) { keepOld(String(e.message || e)); }
 
+// Our own account is always listed, even if it is not in accounts.json.
+if (!accounts.some((a) => a.account?.toLowerCase() === 'takwerx')) {
+  accounts.push({ account: 'takwerx', name: 'TAKwerx', category: 'ATAK, WinTAK and iTAK plugins', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' });
+}
+
 fs.mkdirSync(AVATARS, { recursive: true });
 const out = [];
 for (const a of accounts) {
