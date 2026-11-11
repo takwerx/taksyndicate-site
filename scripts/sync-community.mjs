@@ -43,15 +43,12 @@ try {
 
 // Accounts that are always listed, even if they are not in accounts.json yet.
 const PINNED = [
-  { account: 'takwerx', name: 'TAKwerx', category: 'TAK infrastructure and ATAK plugins', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' },
-  { account: 'ValleyTacticalSolutions', name: 'Valley Tactical Solutions', category: 'CloudTAK plugins and ETLs', url: 'https://github.com/ValleyTacticalSolutions', avatar: 'https://avatars.githubusercontent.com/u/42650546' },
+  { account: 'takwerx', name: 'TAKwerx', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' },
+  { account: 'ValleyTacticalSolutions', name: 'Valley Tactical Solutions', url: 'https://github.com/ValleyTacticalSolutions', avatar: 'https://avatars.githubusercontent.com/u/42650546' },
 ];
 for (const p of PINNED) {
   if (!accounts.some((a) => a.account?.toLowerCase() === p.account.toLowerCase())) accounts.push(p);
 }
-
-// iTAK has no plugins, so drop it from the plugin category.
-const cleanCategory = (c) => (c || '').replace('ATAK, WinTAK and iTAK plugins', 'ATAK and WinTAK plugins');
 
 fs.mkdirSync(AVATARS, { recursive: true });
 const out = [];
@@ -67,7 +64,7 @@ for (const a of accounts) {
       }
     }
   } catch (e) { console.warn(`  ! avatar failed for ${a.account}`); }
-  out.push({ account: a.account, name: (a.name || '').trim() || a.account, category: cleanCategory(a.category), url: a.url, avatar });
+  out.push({ account: a.account, name: (a.name || '').trim() || a.account, url: a.url, avatar });
 }
 out.sort((x, y) => x.name.localeCompare(y.name, 'en', { sensitivity: 'base' }));
 
