@@ -43,7 +43,7 @@ try {
 
 // Our own account is always listed, even if it is not in accounts.json.
 if (!accounts.some((a) => a.account?.toLowerCase() === 'takwerx')) {
-  accounts.push({ account: 'takwerx', name: 'TAKwerx', category: 'ATAK plugins and infra-TAK', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' });
+  accounts.push({ account: 'takwerx', name: 'TAKwerx', category: 'TAK infrastructure and ATAK plugins', url: 'https://github.com/takwerx', avatar: 'https://avatars.githubusercontent.com/u/256680328' });
 }
 
 fs.mkdirSync(AVATARS, { recursive: true });
