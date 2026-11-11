@@ -36,7 +36,7 @@ const shields = [
   { img: 'img-056', team: 'TAK Australia',        league: 'Australia' },
   { img: 'tak-virginia',  team: 'VA-TAK',             league: 'US · Virginia' },
   { img: 'gsdf-tak',      team: 'GSDF-TAK',           league: 'Georgia State Defense Force' },
-  { img: 'georgia-tak',   team: 'Georgia TAK',        league: 'US · State' },
+  { img: 'georgia-tak',   team: 'Georgia TAK',        league: 'US · State', href: 'mailto:gatak@rippletwo.com' },
   { img: 'tak-nebraska',  team: 'NE-TAK',             league: 'US · Nebraska' },
   { img: 'usmc-tak',      team: 'USMC TAK',           league: 'US Marine Corps' },
   { img: 'flight-tactics-tak', team: 'Flight Tactics TAK', league: 'Industry', href: 'https://www.flighttactics.com/' },
@@ -103,8 +103,9 @@ const shields = [
       <div class="bb-grid">
         {shields.map((s, i) => {
           const Tag = s.href ? 'a' : 'div';
+          const web = s.href && !s.href.startsWith('mailto:');
           return (
-            <Tag class="bb-card" href={s.href} target={s.href ? '_blank' : undefined} rel={s.href ? 'noopener' : undefined}>
+            <Tag class="bb-card" href={s.href} target={web ? '_blank' : undefined} rel={web ? 'noopener' : undefined}>
               <span class="bb-num">#{String(i + 1).padStart(2, '0')}</span>
               <span class="bb-window">
                 <img src={`/images/shields/${s.img}.webp`} alt={`${s.team} shield`} loading={i < 12 ? 'eager' : 'lazy'} />
