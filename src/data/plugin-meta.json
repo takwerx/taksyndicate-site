@@ -8,6 +8,7 @@
     "atmosphere":      { "tags": ["wildfire", "hazmat", "water"], "video": "MRsD8godnYo" },
     "firecast":        { "tags": ["wildfire"] },
     "lces":            { "tags": ["wildfire"] },
+    "iwi":             { "tags": ["wildfire", "ems"] },
     "evac-zone":       { "tags": ["wildfire", "water", "hazmat", "le"] },
     "ipaws-alerts":    { "tags": ["all"] },
     "cam-depot":       { "tags": ["wildfire", "le", "all"], "video": "qw0PF617VSE" },
