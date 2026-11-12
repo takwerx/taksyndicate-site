@@ -58,6 +58,9 @@ const reqs = [['Features in full', rest], ['Equipment required', s.requires], ['
             <a href={repoUrl}>Source code</a>
             <a href={`${repoUrl}/issues`}>Report a problem</a>
           </div>
+          {p.slug === 'takwerx-market' && (
+            <p class="dl-note">Built a tak.gov-signed ATAK plugin? <a href="https://github.com/takwerx/takwerx-market/blob/main/docs/LIST_YOUR_PLUGIN.md">List it in the Market</a>, then <a href="https://github.com/takwerx/takwerx-market/issues/new?template=list-my-plugin.yml">send a listing request</a>.</p>
+          )}
         </aside>
 
         <div class="plug-main">
