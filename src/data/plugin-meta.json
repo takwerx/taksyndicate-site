@@ -11,6 +11,7 @@
     "iwi":             { "tags": ["wildfire", "ems"] },
     "evac-zone":       { "tags": ["wildfire", "water", "hazmat", "le"] },
     "ipaws-alerts":    { "tags": ["all"] },
+    "sit-rep":         { "tags": ["all"] },
     "cam-depot":       { "tags": ["wildfire", "le", "all"], "video": "qw0PF617VSE" },
     "traffic":         { "tags": ["le", "ems", "all"] },
     "comms":           { "tags": ["all"], "video": "vMUen3dGXSM" },
