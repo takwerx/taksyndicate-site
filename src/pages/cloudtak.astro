@@ -1,0 +1,189 @@
+---
+import Base from '../layouts/Base.astro';
+import { disciplines } from '../lib/plugins.js';
+import data from '../data/cloudtak.json';
+import meta from '../data/cloudtak-meta.json';
+
+const plugins = data.plugins || [];
+const etls = data.etls || [];
+const developers = new Set([...plugins, ...etls].map((p) => p.owner)).size;
+
+// Plugin filters: by discipline, where 'all' (all-hazards) counts under every discipline but Utilities.
+const used = Object.keys(disciplines).filter((k) => k !== 'all' && plugins.some((p) => p.tags.includes(k)));
+const count = (k) => plugins.filter((p) => p.tags.includes(k) || (k !== 'tools' && p.tags.includes('all'))).length;
+
+// ETL filters: by category.
+const catColor = {
+  aircraft: 'var(--d-air)', trackers: 'var(--d-sar)', dispatch: 'var(--d-le)', cameras: 'var(--d-events)',
+  hazards: 'var(--d-fire)', roads: 'var(--d-hazmat)', data: 'var(--accent)',
+};
+const cats = Object.entries(meta.etl.categories).filter(([k]) => etls.some((e) => e.cat === k));
+const modeLabel = { schedule: 'Scheduled', webhook: 'Webhook', email: 'Email in', outgoing: 'Sends data back' };
+const infratakCount = etls.filter((e) => e.infratak).length;
+
+// Two-letter mark for the icon tile, e.g. "Quick Point Dropper" -> "QP".
+const initials = (n) => n.split(/[\s/()-]+/).filter((w) => /^[A-Za-z0-9]/.test(w)).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
+const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const shortHref = (h) => h.replace(/^https:\/\//, '').replace(/\/blob\/[^/]+\//, '/');
+---
+<Base title="CloudTAK" description="Community plugins and ETLs for CloudTAK, the TAK client that runs in a browser: weather, search and rescue planning, drones, trackers, CAD, cameras and more. Free, with the source on GitHub.">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>CloudTAK</h1>
+        <p><a href="https://github.com/dfpc-coe/CloudTAK">CloudTAK</a> is the TAK client that runs in a browser, built in the open by the State of Colorado’s DFPC Center of Excellence. This page collects what the community builds for it: <strong>plugins</strong> that add tools to the map, and <strong>ETLs</strong> that bring outside data in. {plugins.length + etls.length} projects from {developers} developers, free, with the source on GitHub.</p>
+        <nav class="ct-jump" aria-label="On this page">
+          <a href="#plugins">Plugins <span>{plugins.length}</span></a>
+          <a href="#etls">ETLs <span>{etls.length}</span></a>
+        </nav>
+      </div>
+
+      <!-- ===== Plugins ===== -->
+      <h2 class="section-title" id="plugins"><b>01</b> Plugins</h2>
+      <p class="section-note">A plugin adds a tool to CloudTAK itself: a panel, a map layer, a button. Each one lives in its author’s GitHub repository.</p>
+
+      <section class="market">
+        <div class="market-body">
+          <span class="repo-tag">Easiest way in</span>
+          <h2>Install plugins from TAK Portal’s Marketplace</h2>
+          <p>Plugins marked <strong>Marketplace</strong> install, update and uninstall from the CloudTAK Marketplace in <a href="https://github.com/ValleyTacticalSolutions/TAK-Portal">TAK Portal</a>, on the server that runs CloudTAK. It pulls each plugin from its author’s repository and rebuilds CloudTAK for you. <a href="/infra-tak/">infra-TAK</a> sets up TAK Portal and CloudTAK together.</p>
+          <div class="dl-row">
+            <a class="btn btn-primary" href="https://github.com/ValleyTacticalSolutions/TAK-Portal">TAK Portal on GitHub</a>
+            <a class="btn btn-ghost" href="/infra-tak/">infra-TAK install guide</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="filters" role="group" aria-label="Filter plugins by discipline" data-group="plugins">
+        <button type="button" class="chip" aria-pressed="true" data-f="*">All <span>{plugins.length}</span></button>
+        {used.map((k) => (
+          <button type="button" class="chip" aria-pressed="false" data-f={k} style={`--c: ${disciplines[k].c}`}><i></i>{disciplines[k].label} <span>{count(k)}</span></button>
+        ))}
+      </div>
+
+      <div class="plug-grid" data-group="plugins">
+        {plugins.map((p) => (
+          <a class="plug-card ct-card" href={p.href} data-tags={p.tags.join(' ')}>
+            <span class="plug-icon mono" style={`--c: ${disciplines[p.tags[0]]?.c ?? 'var(--accent)'}`} aria-hidden="true">{initials(p.name)}</span>
+            <span class="plug-top">
+              <h3>{p.name}</h3>
+              <span class="plug-by">by {p.ownerName}{p.release && <span class="ver"> · {p.release}</span>}</span>
+            </span>
+            <p>{p.description}</p>
+            <span class="plug-tags">
+              {p.tags.map((t) => disciplines[t] && <span style={`--c: ${disciplines[t].c}`}><i></i>{disciplines[t].label}</span>)}
+            </span>
+            <span class="plug-meta">
+              {p.marketplace && <span class="mk">Marketplace</span>}
+              {p.server && <span>Has a server part</span>}
+              {p.status && <span class="st">{p.status}</span>}
+              {p.region && <span>{p.region}</span>}
+              {p.license && <span>{p.license}</span>}
+              {p.updated && <span>Updated {month(p.updated)}</span>}
+            </span>
+            <span class="ct-cta"><span class="ct-repo">{shortHref(p.href)}</span>Learn more on GitHub →</span>
+          </a>
+        ))}
+      </div>
+      <p class="empty-note" data-group="plugins" hidden>No plugins tagged for that discipline yet.</p>
+
+      <h3 class="ct-sub">Installing a plugin without the Marketplace</h3>
+      <div class="prose">
+        <p>CloudTAK builds its plugins into the web app, so a plugin is not a file you upload. Copy or link the plugin’s folder into your CloudTAK source (<code>app/plugins/&lt;name&gt;</code>, or <code>api/web/plugins/&lt;name&gt;</code> on older versions), then rebuild CloudTAK. A plugin with a <strong>server part</strong> also adds API routes or its own service, so the API needs a rebuild too.</p>
+        <p><strong>Each plugin’s README has the exact steps and the CloudTAK versions it supports.</strong> Read it first: the plugin API is still young and changes between CloudTAK releases.</p>
+      </div>
+
+      <!-- ===== ETLs ===== -->
+      <h2 class="section-title" id="etls"><b>02</b> ETLs</h2>
+      <p class="section-note">An ETL brings outside data into CloudTAK: drones and aircraft, trackers, CAD and alerts, cameras, weather and hazards. CloudTAK runs each one as a connection layer, on a schedule, from a webhook or from email. Some also send map data back out.</p>
+
+      <section class="market">
+        <div class="market-body">
+          <span class="repo-tag">No AWS account needed</span>
+          <h2>Run ETLs on your own server with infra-TAK</h2>
+          <p>infra-TAK’s ETL Runner installs the {infratakCount} ETLs marked <strong>infra-TAK</strong> from a signed catalog, and runs them on the same server as CloudTAK. Every ETL in that catalog is pinned to one commit and gets a security review before infra-TAK will install it.</p>
+          <div class="dl-row">
+            <a class="btn btn-primary" href="https://github.com/takwerx/infratak-etl-catalog">The infra-TAK ETL catalog</a>
+            <a class="btn btn-ghost" href="/infra-tak/">infra-TAK install guide</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="filters" role="group" aria-label="Filter ETLs by kind of data" data-group="etls">
+        <button type="button" class="chip" aria-pressed="true" data-f="*">All <span>{etls.length}</span></button>
+        {cats.map(([k, label]) => (
+          <button type="button" class="chip" aria-pressed="false" data-f={k} style={`--c: ${catColor[k]}`}><i></i>{label} <span>{etls.filter((e) => e.cat === k).length}</span></button>
+        ))}
+      </div>
+
+      <div class="plug-grid" data-group="etls">
+        {etls.map((e) => (
+          <a class:list={['plug-card ct-card', { 'has-logo': e.logo }]} href={e.href} data-tags={e.cat}>
+            {e.logo
+              ? <span class="plug-icon logo"><img src={e.logo} alt="" loading="lazy" /></span>
+              : <span class="plug-icon mono" style={`--c: ${catColor[e.cat]}`} aria-hidden="true">{initials(e.name)}</span>}
+            <span class="plug-top">
+              <h3>{e.name}</h3>
+              <span class="plug-by">by {e.ownerName}{e.version && <span class="ver"> · v{e.version}</span>}</span>
+            </span>
+            <p class="clamp">{e.description}</p>
+            <span class="plug-tags">
+              <span style={`--c: ${catColor[e.cat]}`}><i></i>{meta.etl.categories[e.cat]}</span>
+              {e.region && <span style="--c: var(--muted)"><i></i>{e.region}</span>}
+            </span>
+            <span class="plug-meta">
+              {e.infratak && <span class="mk">infra-TAK</span>}
+              {e.modes.map((m) => <span>{modeLabel[m]}</span>)}
+              {e.license && <span>{e.license}</span>}
+              {e.updated && <span>Updated {month(e.updated)}</span>}
+            </span>
+            <span class="ct-cta"><span class="ct-repo">{shortHref(e.href)}</span>Learn more on GitHub →</span>
+          </a>
+        ))}
+      </div>
+      <p class="empty-note" data-group="etls" hidden>No ETLs of that kind yet.</p>
+
+      <!-- ===== Build your own ===== -->
+      <h2 class="section-title"><b>+</b> Built one?</h2>
+      <div class="prose">
+        <p><strong>A plugin:</strong> send it to the Marketplace with <strong>Submit a plugin</strong> in TAK Portal’s CloudTAK Marketplace, or open an issue on <a href="https://github.com/ValleyTacticalSolutions/TAK-Portal/issues">TAK Portal</a>. Once it is in the Marketplace catalog, it shows up on this page by itself. To start, use the official <a href="https://github.com/dfpc-coe/CloudTAK-Plugin-Sample">CloudTAK-Plugin-Sample</a> template and the community guide <a href="https://github.com/jpat-12/CloudTAK-Plugin_Development">CloudTAK Plugin Development</a>.</p>
+        <p><strong>An ETL:</strong> open an issue on the <a href="https://github.com/takwerx/infratak-etl-catalog/issues">infra-TAK ETL catalog</a> with the repository and the release you want listed. It must be a standard CloudTAK ETL, and it gets a security review before infra-TAK installs it. To start, use <a href="https://github.com/dfpc-coe/etl-template">etl-template</a>.</p>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    (function () {
+      var hashed = false;
+      document.querySelectorAll('.filters[data-group]').forEach(function (bar) {
+        var g = bar.dataset.group;
+        var chips = bar.querySelectorAll('.chip');
+        var cards = document.querySelectorAll('.plug-grid[data-group="' + g + '"] .plug-card');
+        var empty = document.querySelector('.empty-note[data-group="' + g + '"]');
+        // Plugins: an all-hazards plugin shows under every discipline but Utilities.
+        var allTag = g === 'plugins';
+        function apply(f) {
+          var shown = 0;
+          cards.forEach(function (c) {
+            var t = c.dataset.tags.split(' ');
+            var on = f === '*' || t.indexOf(f) >= 0 || (allTag && f !== 'tools' && t.indexOf('all') >= 0);
+            c.hidden = !on; if (on) shown++;
+          });
+          chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c.dataset.f === f)); });
+          empty.hidden = shown > 0;
+        }
+        chips.forEach(function (c) {
+          c.addEventListener('click', function () {
+            apply(c.dataset.f);
+            history.replaceState(null, '', c.dataset.f === '*' ? location.pathname + '#' + g : '#' + g + '-' + c.dataset.f);
+          });
+        });
+        var h = location.hash.slice(1);
+        if (!hashed && h.indexOf(g + '-') === 0) {
+          var f = h.slice(g.length + 1);
+          if (bar.querySelector('.chip[data-f="' + f + '"]')) { apply(f); hashed = true; bar.scrollIntoView(); }
+        }
+      });
+    })();
+  </script>
+</Base>

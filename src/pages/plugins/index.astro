@@ -1,6 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PluginTabs from '../../components/PluginTabs.astro';
 import { plugins, community, featured, disciplines, mb } from '../../lib/plugins.js';
 
 const used = Object.keys(disciplines).filter((k) => k !== 'all' && plugins.some((p) => p.tags.includes(k)));
@@ -11,9 +10,8 @@ const rest = plugins.filter((p) => p !== featured);
   <main id="main">
     <div class="wrap">
       <div class="page-head">
-        <PluginTabs active="atak" />
         <h1>ATAK Plugins</h1>
-        <p>Free and open source, signed through TAK’s third-party pipeline, and built by people who use them on incidents. {plugins.length} plugins and counting.</p>
+        <p>Free and open source, signed through TAK’s third-party pipeline, and built by people who use them on incidents. {plugins.length} plugins and counting. Looking for CloudTAK? Its plugins and ETLs are on the <a href="/cloudtak/">CloudTAK page</a>.</p>
       </div>
 
       {featured && (

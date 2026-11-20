@@ -9,5 +9,6 @@ src/data/plugins.json
 src/data/community.json
 public/community-avatars/
 src/data/cloudtak.json
+public/cloudtak-etl-logos/
 .dev.vars
 .wrangler/

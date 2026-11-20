@@ -34,14 +34,14 @@ An **advocacy** site for the Team Awareness Kit. Nothing is for sale.
 | `src/pages/takwerx.astro` | TAKwerx hub |
 | `src/pages/infra-tak.md` | infra-TAK install guide |
 | `src/pages/plugins/` | Plugin catalog, built from `src/data/plugins.json` (generated; extra fields in `plugin-meta.json`) |
-| `src/pages/plugins/cloudtak.astro` | CloudTAK plugins (community), built from the TAK Portal Marketplace catalog plus `src/data/cloudtak-meta.json` via `scripts/sync-cloudtak.mjs` |
+| `src/pages/cloudtak.astro` | CloudTAK: community plugins (TAK Portal Marketplace catalog) and ETLs (infra-TAK ETL catalog, dfpc-coe and TAK-NZ `etl-*` repos), built by `scripts/sync-cloudtak.mjs`. Hand edits go in `src/data/cloudtak-meta.json` |
 | `src/pages/links.astro` | Links: logo cards |
 | `src/pages/community.astro` | GitHub TAK (Community TAK Projects), built from private repo takwerx/community-tak-projects via `scripts/sync-community.mjs` (needs `COMMUNITY_TOKEN`) |
 | `src/pages/shields.astro` | Shields |
 | `src/pages/atak-terminal.astro` | ATAK Terminal |
 
 Top menu items: `src/components/Nav.astro`. Shared layout and the site notice bar: `src/layouts/Base.astro`.
-The menu collapses to the hamburger at 960px wide. The full header needs about 960px; if you add a menu item, measure again.
+The menu collapses to the hamburger at 1040px wide. The full header needs about 1035px (10 items); if you add a menu item, measure again.
 
 ## Links page (`src/pages/links.astro`)
 

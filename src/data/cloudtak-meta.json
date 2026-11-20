@@ -1,5 +1,5 @@
 {
-  "_readme": "Hand-edited. Drives /plugins/cloudtak/. scripts/sync-cloudtak.mjs reads the TAK Portal CloudTAK Marketplace catalog, adds the 'extra' entries below, and pulls each repo's license, last push, latest release and owner from GitHub. Every catalog entry with a public repo is listed; hidden ones lose the Marketplace mark. Repos in 'skip', and private or missing repos, are left out. Per-repo keys under 'plugins' (owner/repo, any case), also allowed on 'extra' entries: tags (wildfire, hazmat, sar, le, ems, water, air, all, tools), description (replaces the catalog's), name, region (a country, if the plugin only works there), status (e.g. 'In development', shown on the card), href (link to this instead of the repo root, e.g. a docs page), release (false hides a release tag that is not the CloudTAK plugin's). 'owners' maps a GitHub login to the name shown. Write descriptions from the plugin's own README.",
+  "_readme": "Hand-edited. Drives /cloudtak/ (plugins; ETLs are under 'etl'). scripts/sync-cloudtak.mjs reads the TAK Portal CloudTAK Marketplace catalog, adds the 'extra' entries below, and pulls each repo's license, last push, latest release and owner from GitHub. Every catalog entry with a public repo is listed; hidden ones lose the Marketplace mark. Repos in 'skip', and private or missing repos, are left out. Per-repo keys under 'plugins' (owner/repo, any case), also allowed on 'extra' entries: tags (wildfire, hazmat, sar, le, ems, water, air, all, tools), description (replaces the catalog's), name, region (a country, if the plugin only works there), status (e.g. 'In development', shown on the card), href (link to this instead of the repo root, e.g. a docs page), release (false hides a release tag that is not the CloudTAK plugin's). 'owners' maps a GitHub login to the name shown. Write descriptions from the plugin's own README.",
   "catalog": "ValleyTacticalSolutions/TAK-Portal/catalog/cloudtak-plugins.json",
   "skip": [],
   "plugins": {
@@ -212,6 +212,229 @@
     }
   ],
   "owners": {
-    "takwerx": "TAKwerx"
+    "takwerx": "TAKwerx",
+    "dfpc-coe": "Colorado DFPC CoE",
+    "TAK-NZ": "TAK.NZ"
+  },
+  "etl": {
+    "_readme": "ETLs for the second half of /cloudtak/. catalog: the infra-TAK ETL catalog (entries in it get the infra-TAK mark when reviewed). orgs: every non-fork etl-* repo in these GitHub orgs is listed too. extra: other ETL repos. skip: repos to leave out (libraries). categories: filter chips (key -> label). entries: per repo (owner/repo, any case): cat (a category key; default data), region, name, description.",
+    "catalog": "takwerx/infratak-etl-catalog/catalog.json",
+    "orgs": [
+      "dfpc-coe",
+      "TAK-NZ"
+    ],
+    "extra": [
+      "clptak/cloudtak-etl-tfr",
+      "chriselsen/etl-seavision",
+      "michaelsparks13/etl-nws-alerts"
+    ],
+    "skip": [
+      "dfpc-coe/etl-base",
+      "dfpc-coe/etl-template"
+    ],
+    "categories": {
+      "aircraft": "Aircraft & drones",
+      "trackers": "Trackers & vessels",
+      "dispatch": "CAD & alerts",
+      "cameras": "Cameras & video",
+      "hazards": "Weather & hazards",
+      "roads": "Roads & transit",
+      "data": "Data & integration"
+    },
+    "entries": {
+      "dfpc-coe/etl-adsbx": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-air-data": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-brinc": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-dji-flight-hub": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-drone-sense": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-nasa-acero": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-skydio": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-spider-tracks": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-drone-tag": {
+        "cat": "aircraft"
+      },
+      "dfpc-coe/etl-axon": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-buddi": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-cellping": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-ensurity": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-everywhere-hub": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-inreach": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-geotab": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-optimus": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-skymira": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-spot": {
+        "cat": "trackers"
+      },
+      "dfpc-coe/etl-active911": {
+        "cat": "dispatch"
+      },
+      "dfpc-coe/etl-central-square": {
+        "cat": "dispatch"
+      },
+      "dfpc-coe/etl-first-due": {
+        "cat": "dispatch"
+      },
+      "dfpc-coe/etl-jeffcom": {
+        "cat": "dispatch"
+      },
+      "dfpc-coe/etl-wildweb": {
+        "cat": "dispatch"
+      },
+      "dfpc-coe/etl-AlertWest": {
+        "cat": "cameras"
+      },
+      "dfpc-coe/etl-shotover": {
+        "cat": "cameras"
+      },
+      "dfpc-coe/etl-verkada": {
+        "cat": "cameras"
+      },
+      "dfpc-coe/etl-cotrip-cameras": {
+        "cat": "cameras",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-usgs-gauges": {
+        "cat": "hazards"
+      },
+      "dfpc-coe/etl-caic": {
+        "cat": "hazards",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-cotrip-weather": {
+        "cat": "hazards",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-cotrip-signs": {
+        "cat": "roads",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-cotrip-incidents": {
+        "cat": "roads",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-cotrip-plows": {
+        "cat": "roads",
+        "region": "Colorado"
+      },
+      "dfpc-coe/etl-waze": {
+        "cat": "roads"
+      },
+      "dfpc-coe/etl-caltopo": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-cot": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-arcgis": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-geojson": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-santa": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-slack-bsar": {
+        "cat": "data"
+      },
+      "dfpc-coe/etl-strato": {
+        "cat": "data"
+      },
+      "clptak/etl-caltopo": {
+        "cat": "data"
+      },
+      "clptak/cloudtak-etl-tfr": {
+        "cat": "aircraft"
+      },
+      "TAK-NZ/etl-adsbx": {
+        "cat": "aircraft",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-aishub": {
+        "cat": "trackers"
+      },
+      "TAK-NZ/etl-aprs": {
+        "cat": "trackers"
+      },
+      "TAK-NZ/etl-floodhub": {
+        "cat": "hazards"
+      },
+      "TAK-NZ/etl-avalanche": {
+        "cat": "hazards",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-firms": {
+        "cat": "hazards",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-geonet-quakes": {
+        "cat": "hazards",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-poweroutages": {
+        "cat": "hazards",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-safeswim": {
+        "cat": "hazards",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-capnz": {
+        "cat": "dispatch",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-geonet-volcanocams": {
+        "cat": "cameras",
+        "region": "New Zealand"
+      },
+      "TAK-NZ/etl-wlg-metlink": {
+        "cat": "roads",
+        "region": "New Zealand"
+      },
+      "chriselsen/etl-seavision": {
+        "cat": "trackers",
+        "name": "SeaVision",
+        "description": "Marine traffic from SeaVision on the map."
+      },
+      "michaelsparks13/etl-nws-alerts": {
+        "cat": "dispatch",
+        "name": "NWS Alerts",
+        "description": "Active National Weather Service alerts on the map: Red Flag Warnings, Fire Weather Watches, Flash Flood Warnings and more."
+      }
+    }
   }
 }
