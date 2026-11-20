@@ -18,7 +18,7 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
       <div class="page-head">
         <PluginTabs active="cloudtak" />
         <h1>CloudTAK Plugins</h1>
-        <p>Plugins for <a href="https://github.com/dfpc-coe/CloudTAK">CloudTAK</a>, the TAK client that runs in a browser, built by responders and developers across the community. Free, with the source on GitHub. {plugins.length} plugins from {developers} developers.</p>
+        <p>Plugins for <a href="https://github.com/dfpc-coe/CloudTAK">CloudTAK</a>, the TAK client that runs in a browser, built by responders and developers across the community, TAKwerx among them. Free, with the source on GitHub. {plugins.length} plugins from {developers} developers.</p>
       </div>
 
       <section class="market">
@@ -42,7 +42,7 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
 
       <div class="plug-grid">
         {plugins.map((p) => (
-          <a class="plug-card ct-card" href={`https://github.com/${p.repo}`} data-tags={p.tags.join(' ')}>
+          <a class="plug-card ct-card" href={p.href} data-tags={p.tags.join(' ')}>
             <span class="plug-icon mono" style={`--c: ${disciplines[p.tags[0]]?.c ?? 'var(--accent)'}`} aria-hidden="true">{initials(p.name)}</span>
             <span class="plug-top">
               <h3>{p.name}</h3>
@@ -55,11 +55,12 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
             <span class="plug-meta">
               {p.marketplace && <span class="mk">Marketplace</span>}
               {p.server && <span>Has a server part</span>}
+              {p.status && <span class="st">{p.status}</span>}
               {p.region && <span>{p.region}</span>}
               {p.license && <span>{p.license}</span>}
               {p.updated && <span>Updated {month(p.updated)}</span>}
             </span>
-            <span class="ct-cta"><span class="ct-repo">github.com/{p.repo}</span>Learn more on GitHub →</span>
+            <span class="ct-cta"><span class="ct-repo">{p.href.replace(/^https:\/\//, '').replace(/\/blob\/[^/]+\//, '/')}</span>Learn more on GitHub →</span>
           </a>
         ))}
       </div>
@@ -75,7 +76,6 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
       <div class="prose">
         <p>Send it to the Marketplace with <strong>Submit a plugin</strong> in TAK Portal’s CloudTAK Marketplace, or open an issue on <a href="https://github.com/ValleyTacticalSolutions/TAK-Portal/issues">TAK Portal</a>. Once it is in the Marketplace catalog, it shows up on this page by itself.</p>
         <p>Starting from scratch? <a href="https://github.com/dfpc-coe/CloudTAK-Plugin-Sample">CloudTAK-Plugin-Sample</a> is the official template, and <a href="https://github.com/jpat-12/CloudTAK-Plugin_Development">CloudTAK Plugin Development</a> is a community guide to how plugins work.</p>
-        <p class="section-note">TAKwerx’s own CloudTAK plugins are on the <a href="/takwerx/#cloudtak">TAKwerx page</a>.</p>
       </div>
     </div>
   </main>

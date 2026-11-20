@@ -4,7 +4,8 @@
 //
 // Source: the TAK Portal CloudTAK Marketplace catalog, plus the hand-edited
 // src/data/cloudtak-meta.json (tags, descriptions, extra repos, skips).
-// Each repo's license, last push, latest release and owner come from the GitHub API.
+// Every catalog entry is listed (hidden ones without the Marketplace mark); repos
+// that are private or gone are dropped. Each repo's license, last push, latest release and owner come from the GitHub API.
 // Token (optional, raises the rate limit): GH_API_TOKEN or GITHUB_TOKEN; locally, `gh auth token`.
 // Output (not in git): src/data/cloudtak.json.
 // If the catalog can't be read, the previous file stays and the build goes on.
@@ -47,7 +48,7 @@ const repoName = (s) => String(s || '').replace(/^https:\/\/github\.com\//, '').
 const key = (r) => r.toLowerCase();
 const metaFor = Object.fromEntries(Object.entries(META.plugins || {}).map(([r, m]) => [key(r), m]));
 const skip = new Set((META.skip || []).map(key));
-const skipOwners = new Set((META.skipOwners || []).map((o) => o.toLowerCase()));
+const ownerNames = Object.fromEntries(Object.entries(META.owners || {}).map(([o, n]) => [o.toLowerCase(), n]));
 
 // 1. The marketplace catalog.
 const [cOwner, cRepo, ...cPath] = META.catalog.split('/');
@@ -61,11 +62,12 @@ try {
 
 const entries = [];
 for (const p of catalog.plugins) {
-  if (p.hidden) continue;
   const repo = repoName(p.repo);
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) continue;
   entries.push({
-    repo, name: p.name, description: p.description, marketplace: true,
+    repo, name: p.name, description: p.description,
+    // Hidden entries can't be installed from the Marketplace right now, but the repo is still public.
+    marketplace: !p.hidden,
     // A server half (API routes, a sidecar or its own Docker service) means more for the admin to run.
     server: Boolean(p.routes || p.sidecars?.length || p.composeFile),
   });
@@ -79,21 +81,22 @@ for (const x of META.extra || []) {
 const owners = new Map();
 const out = [];
 for (const e of entries) {
-  if (skip.has(key(e.repo)) || skipOwners.has(e.repo.split('/')[0].toLowerCase())) continue;
+  if (skip.has(key(e.repo))) continue;
   const m = { ...(e.extra || {}), ...(metaFor[key(e.repo)] || {}) };
   let info, release;
   try {
     info = await gh(`/repos/${e.repo}`);
     if (!info) { console.warn(`  ! ${e.repo}: not found, left out`); continue; }
+    if (info.private) { console.warn(`  ! ${e.repo}: private, left out`); continue; }
     if (info.archived) { console.warn(`  ! ${e.repo}: archived, left out`); continue; }
-    release = await gh(`/repos/${e.repo}/releases/latest`);
+    if (!m.href && m.release !== false) release = await gh(`/repos/${e.repo}/releases/latest`);
   } catch (err) {
     console.warn(`  ! ${e.repo}: ${err.message}; listed without GitHub details`);
   }
   const login = info?.owner?.login || e.repo.split('/')[0];
   if (!owners.has(login)) {
-    let name = login;
-    try { const u = await gh(`/users/${login}`); if (u?.name?.trim()) name = u.name.trim(); }
+    let name = ownerNames[login.toLowerCase()] || login;
+    try { const u = await gh(`/users/${login}`); if (!ownerNames[login.toLowerCase()] && u?.name?.trim()) name = u.name.trim(); }
     catch { console.warn(`  ! ${login}: profile failed`); }
     owners.set(login, name);
   }
@@ -103,6 +106,8 @@ for (const e of entries) {
     description: m.description || e.description || info?.description || '',
     tags: m.tags?.length ? m.tags : ['all'],
     region: m.region || null,
+    status: m.status || null,
+    href: m.href || `https://github.com/${info?.full_name || e.repo}`,
     owner: login,
     ownerName: owners.get(login),
     marketplace: e.marketplace,

@@ -1,43 +1,217 @@
 {
-  "_readme": "Hand-edited. Drives /plugins/cloudtak/. scripts/sync-cloudtak.mjs reads the TAK Portal CloudTAK Marketplace catalog, adds the 'extra' repos below, and pulls each repo's license, last push, latest release and owner from GitHub. Catalog entries marked hidden, and repos owned by skipOwners, are left out (TAKwerx's own CloudTAK plugins are on /takwerx/). Per-repo keys under 'plugins' (owner/repo, any case): tags (wildfire, hazmat, sar, le, ems, water, air, all, tools), description (replaces the catalog's), name, region (a country, if the plugin only works there). Write descriptions from the plugin's own README.",
+  "_readme": "Hand-edited. Drives /plugins/cloudtak/. scripts/sync-cloudtak.mjs reads the TAK Portal CloudTAK Marketplace catalog, adds the 'extra' entries below, and pulls each repo's license, last push, latest release and owner from GitHub. Every catalog entry with a public repo is listed; hidden ones lose the Marketplace mark. Repos in 'skip', and private or missing repos, are left out. Per-repo keys under 'plugins' (owner/repo, any case), also allowed on 'extra' entries: tags (wildfire, hazmat, sar, le, ems, water, air, all, tools), description (replaces the catalog's), name, region (a country, if the plugin only works there), status (e.g. 'In development', shown on the card), href (link to this instead of the repo root, e.g. a docs page), release (false hides a release tag that is not the CloudTAK plugin's). 'owners' maps a GitHub login to the name shown. Write descriptions from the plugin's own README.",
   "catalog": "ValleyTacticalSolutions/TAK-Portal/catalog/cloudtak-plugins.json",
-  "skipOwners": ["takwerx"],
-  "skip": ["TAK-NZ/cloudtak-plugin-rubbersheet"],
+  "skip": [],
   "plugins": {
-    "ValleyTacticalSolutions/cloudtak-plugin-quick-point-dropper": { "tags": ["all"] },
-    "ValleyTacticalSolutions/cloudtak-plugin-livewx": { "tags": ["wildfire", "water", "all"], "name": "LiveWX",
-      "description": "Point forecasts, NEXRAD radar, nationwide NWS watches and warnings, fire, hydro and marine layers, and live lightning." },
-    "ValleyTacticalSolutions/cloudtak-plugin-rubbersheet": { "tags": ["all"] },
-    "ValleyTacticalSolutions/cloudtak-plugin-sidebar-configurator": { "tags": ["tools"] },
-    "clptak/cloudtak-plugin-print": { "tags": ["wildfire", "sar", "all"],
-      "description": "Print-quality PDF maps at a chosen scale: the basemap plus live overlays, for the field with a map, compass and UTM grid tool." },
-    "clptak/cloudtak-plugin-cellphone": { "tags": ["sar", "le"], "name": "Cell Ping / RTT",
-      "description": "Enter a carrier's ping, RTT or timing-advance result and plot it as TAK shapes in the active Data Sync, with a timeline of call activity." },
-    "clptak/cloudtak-plugin-d4h": { "tags": ["sar", "all"],
-      "description": "Personnel, equipment and incidents from D4H Team Manager in CloudTAK, and incidents and rosters sent back from Data Sync missions." },
-    "clptak/cloudtak-plugin-location-search": { "tags": ["all"],
-      "description": "Address and place-name search from OpenAddresses and USGS GNIS that works offline: fly to a result or drop a marker." },
-    "clptak/cloudtak-plugin-incident-manager": { "tags": ["sar"],
-      "description": "A search and rescue incident manager in a floating pane: create the incident's mission, assign tasks and follow them on a dashboard." },
-    "clptak/cloudtak-plugin-skydio": { "tags": ["air"],
-      "description": "Skydio flight telemetry on the map, flight missions made from map objects, Skydio alerts, and key events logged to Data Sync." },
-    "clptak/cloudtak-plugin-search-containment": { "tags": ["sar"],
-      "description": "Find where trails cross a search boundary, number the containment points and post them to the mission. Like ATAK's Chokepoint." },
-    "clptak/cloudtak-plugin-measure": { "tags": ["all"] },
-    "dfndr13/cloudtak-replay-plugin": { "tags": ["all"] },
-    "dfndr13/cloudtak-plugin-cam-depot": { "tags": ["wildfire", "le", "all"],
-      "description": "Public traffic cameras on the CloudTAK map: search, filters, stills and live video, from the TAKwerx Cam Depot camera catalog." }
+    "ValleyTacticalSolutions/cloudtak-plugin-quick-point-dropper": {
+      "tags": [
+        "all"
+      ]
+    },
+    "ValleyTacticalSolutions/cloudtak-plugin-livewx": {
+      "tags": [
+        "wildfire",
+        "water",
+        "all"
+      ],
+      "name": "LiveWX",
+      "description": "Point forecasts, NEXRAD radar, nationwide NWS watches and warnings, fire, hydro and marine layers, and live lightning."
+    },
+    "ValleyTacticalSolutions/cloudtak-plugin-rubbersheet": {
+      "tags": [
+        "all"
+      ]
+    },
+    "ValleyTacticalSolutions/cloudtak-plugin-sidebar-configurator": {
+      "tags": [
+        "tools"
+      ]
+    },
+    "clptak/cloudtak-plugin-print": {
+      "tags": [
+        "wildfire",
+        "sar",
+        "all"
+      ],
+      "description": "Print-quality PDF maps at a chosen scale: the basemap plus live overlays, for the field with a map, compass and UTM grid tool."
+    },
+    "clptak/cloudtak-plugin-cellphone": {
+      "tags": [
+        "sar",
+        "le"
+      ],
+      "name": "Cell Ping / RTT",
+      "description": "Enter a carrier's ping, RTT or timing-advance result and plot it as TAK shapes in the active Data Sync, with a timeline of call activity."
+    },
+    "clptak/cloudtak-plugin-d4h": {
+      "tags": [
+        "sar",
+        "all"
+      ],
+      "description": "Personnel, equipment and incidents from D4H Team Manager in CloudTAK, and incidents and rosters sent back from Data Sync missions."
+    },
+    "clptak/cloudtak-plugin-location-search": {
+      "tags": [
+        "all"
+      ],
+      "description": "Address and place-name search from OpenAddresses and USGS GNIS that works offline: fly to a result or drop a marker."
+    },
+    "clptak/cloudtak-plugin-incident-manager": {
+      "tags": [
+        "sar"
+      ],
+      "description": "A search and rescue incident manager in a floating pane: create the incident's mission, assign tasks and follow them on a dashboard."
+    },
+    "clptak/cloudtak-plugin-skydio": {
+      "tags": [
+        "air"
+      ],
+      "description": "Skydio flight telemetry on the map, flight missions made from map objects, Skydio alerts, and key events logged to Data Sync."
+    },
+    "clptak/cloudtak-plugin-search-containment": {
+      "tags": [
+        "sar"
+      ],
+      "description": "Find where trails cross a search boundary, number the containment points and post them to the mission. Like ATAK's Chokepoint."
+    },
+    "clptak/cloudtak-plugin-measure": {
+      "tags": [
+        "all"
+      ]
+    },
+    "dfndr13/cloudtak-replay-plugin": {
+      "tags": [
+        "all"
+      ]
+    },
+    "dfndr13/cloudtak-plugin-cam-depot": {
+      "tags": [
+        "wildfire",
+        "le",
+        "all"
+      ],
+      "description": "Public traffic cameras on the CloudTAK map: search, filters, stills and live video, from the TAKwerx Cam Depot camera catalog."
+    },
+    "takwerx/cloudtak-crosstak-plugin": {
+      "tags": [
+        "all"
+      ],
+      "status": "Pre-release",
+      "description": "Other agencies' TAK Servers on your CloudTAK map, each with your own account: their live picture, your position, sending and Data Sync. Not federation."
+    },
+    "takwerx/cloudtak-dispatcher-plugin": {
+      "tags": [
+        "le",
+        "ems",
+        "all"
+      ],
+      "description": "Create and manage incidents on the map under named events, assign responders, and notify them through mission chat and GeoChat."
+    },
+    "dwhit6605-bit/cloudtak_wmdplotter_plugin": {
+      "tags": [
+        "hazmat"
+      ],
+      "name": "WMD Plotter",
+      "description": "Compute CBRN hazard plumes in the browser with nine dispersion models, and post the hazard zones to the active Data Sync mission."
+    },
+    "TAK-NZ/cloudtak-plugin-rubbersheet": {
+      "tags": [
+        "all"
+      ],
+      "description": "Stretch a photo or PDF over the map and georectify it, then edit it and export KMZ, GeoTIFF or GeoPDF."
+    }
   },
   "extra": [
-    { "repo": "clptak/cloudtak-plugin-preplans", "name": "Preplans", "tags": ["sar", "all"],
-      "description": "Copy a preplan from a Preplan Library Data Sync into any mission as fresh map objects, so incidents never share objects." },
-    { "repo": "clptak/cloudtak-plugin-caltopo-sync", "name": "CalTopo Sync", "tags": ["sar"],
-      "description": "Pair CalTopo maps with TAK missions and watch each pair's sync runs. The sync itself runs in the etl-caltopo ETL." },
-    { "repo": "cmlaird/CloudTAK-Plugin-Lightning", "name": "Lightning Monitor", "tags": ["wildfire", "all"],
-      "description": "Live Blitzortung lightning strikes inside a radius you set, colored by age, with a strike count in the bottom bar." },
-    { "repo": "TAK-NZ/cloudtak-plugin-weather", "name": "Weather", "tags": ["all"], "region": "New Zealand",
-      "description": "Cloud, rain and radar layers with a timeline from 2 hours ago to a 4-hour rain forecast. Data from Rainbow.ai." },
-    { "repo": "TAK-NZ/cloudtak-plugin-sar", "name": "SAR Planning", "tags": ["sar"], "region": "New Zealand",
-      "description": "Travel-time contours and Koester range rings from an initial planning point, over New Zealand terrain, land cover and trails." }
-  ]
+    {
+      "repo": "clptak/cloudtak-plugin-preplans",
+      "name": "Preplans",
+      "tags": [
+        "sar",
+        "all"
+      ],
+      "description": "Copy a preplan from a Preplan Library Data Sync into any mission as fresh map objects, so incidents never share objects."
+    },
+    {
+      "repo": "clptak/cloudtak-plugin-caltopo-sync",
+      "name": "CalTopo Sync",
+      "tags": [
+        "sar"
+      ],
+      "description": "Pair CalTopo maps with TAK missions and watch each pair's sync runs. The sync itself runs in the etl-caltopo ETL."
+    },
+    {
+      "repo": "cmlaird/CloudTAK-Plugin-Lightning",
+      "name": "Lightning Monitor",
+      "tags": [
+        "wildfire",
+        "all"
+      ],
+      "description": "Live Blitzortung lightning strikes inside a radius you set, colored by age, with a strike count in the bottom bar."
+    },
+    {
+      "repo": "TAK-NZ/cloudtak-plugin-weather",
+      "name": "Weather",
+      "tags": [
+        "all"
+      ],
+      "region": "New Zealand",
+      "description": "Cloud, rain and radar layers with a timeline from 2 hours ago to a 4-hour rain forecast. Data from Rainbow.ai."
+    },
+    {
+      "repo": "TAK-NZ/cloudtak-plugin-sar",
+      "name": "SAR Planning",
+      "tags": [
+        "sar"
+      ],
+      "region": "New Zealand",
+      "description": "Travel-time contours and Koester range rings from an initial planning point, over New Zealand terrain, land cover and trails."
+    },
+    {
+      "repo": "takwerx/infra-TAK",
+      "name": "TAK Simulator",
+      "tags": [
+        "tools"
+      ],
+      "href": "https://github.com/takwerx/infra-TAK/blob/main/docs/SIMULATOR.md",
+      "description": "A director panel for live exercises, demos and load tests: scripted units on an isolated simulation channel. Comes only with infra-TAK."
+    },
+    {
+      "repo": "jpat-12/TAK-PluginSuite-Aleph",
+      "name": "Aleph for TAK",
+      "tags": [
+        "sar",
+        "all"
+      ],
+      "description": "Draw a search area and get back an offline TAK data package of it: open aerial imagery, DTED and OSM data. Also for ATAK and WinTAK; needs infra-TAK."
+    },
+    {
+      "repo": "jpat-12/TAK-PluginSuite-CrowdCAD",
+      "name": "CrowdCAD for TAK",
+      "tags": [
+        "ems"
+      ],
+      "status": "In development",
+      "description": "A CrowdCAD event's live medical calls, teams and venue zones on the CloudTAK map, from a bridge on infra-TAK. Also for ATAK and WebTAK."
+    },
+    {
+      "repo": "jpat-12/TAK-PluginSuite-FeatureLink",
+      "name": "FeatureLink",
+      "tags": [
+        "all"
+      ],
+      "status": "In development",
+      "description": "Bridges TAK and Esri ArcGIS Feature Services: push map items to hosted feature layers and track PLI history. Also for ATAK and WinTAK.",
+      "release": false
+    },
+    {
+      "repo": "TAK-NZ/cloudtak-plugin-rubbersheet",
+      "name": "Rubber Sheet",
+      "tags": [
+        "all"
+      ]
+    }
+  ],
+  "owners": {
+    "takwerx": "TAKwerx"
+  }
 }
