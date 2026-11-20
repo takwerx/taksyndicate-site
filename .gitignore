@@ -8,5 +8,6 @@ public/plugin-assets/
 src/data/plugins.json
 src/data/community.json
 public/community-avatars/
+src/data/cloudtak.json
 .dev.vars
 .wrangler/

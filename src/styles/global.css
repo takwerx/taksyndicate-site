@@ -401,6 +401,20 @@ main { padding: 56px 0 80px; }
 .plug-meta { grid-area: meta; display: flex; flex-wrap: wrap; gap: 4px 12px; padding-top: 12px; border-top: 1px dashed var(--border); font: 0.66rem/1.4 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
 .empty-note { color: var(--muted); }
 
+/* ATAK | CloudTAK switch above both plugin catalogs */
+.plug-tabs { display: inline-flex; margin: 0 0 18px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.plug-tabs a { font: 500 0.72rem/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; color: var(--muted); text-decoration: none; border: 0 !important; }
+.plug-tabs a + a { border-left: 1px solid var(--border) !important; }
+.plug-tabs a:hover { color: var(--text); }
+.plug-tabs a[aria-current="page"] { color: var(--text); background: color-mix(in srgb, var(--accent) 14%, var(--surface)); }
+
+/* CloudTAK cards: the plugin's initials in the icon tile, in its first discipline's color */
+.plug-icon.mono { font: 700 1.5rem/1 var(--display); letter-spacing: 0.04em; color: var(--c); border-color: color-mix(in srgb, var(--c) 40%, var(--border)); background: color-mix(in srgb, var(--c) 10%, var(--tile)); }
+.plug-by { display: block; margin-top: 6px; font: 0.7rem/1.3 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+.plug-meta .mk { color: var(--accent); }
+.plug-meta .gh { margin-left: auto; }
+.market p a { color: var(--accent-2); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent-2) 35%, transparent); }
+
 .comm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 18px; }
 .comm-card { display: flex; gap: 14px; padding: 14px; text-decoration: none; color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 .comm-card:hover { border-color: var(--muted); }

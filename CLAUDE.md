@@ -34,6 +34,7 @@ An **advocacy** site for the Team Awareness Kit. Nothing is for sale.
 | `src/pages/takwerx.astro` | TAKwerx hub |
 | `src/pages/infra-tak.md` | infra-TAK install guide |
 | `src/pages/plugins/` | Plugin catalog, built from `src/data/plugins.json` (generated; extra fields in `plugin-meta.json`) |
+| `src/pages/plugins/cloudtak.astro` | CloudTAK plugins (community), built from the TAK Portal Marketplace catalog plus `src/data/cloudtak-meta.json` via `scripts/sync-cloudtak.mjs` |
 | `src/pages/links.astro` | Links: logo cards |
 | `src/pages/community.astro` | GitHub TAK (Community TAK Projects), built from private repo takwerx/community-tak-projects via `scripts/sync-community.mjs` (needs `COMMUNITY_TOKEN`) |
 | `src/pages/shields.astro` | Shields |
