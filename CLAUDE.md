@@ -41,7 +41,7 @@ An **advocacy** site for the Team Awareness Kit. Nothing is for sale.
 | `src/pages/atak-terminal.astro` | ATAK Terminal |
 
 Top menu items: `src/components/Nav.astro`. Shared layout and the site notice bar: `src/layouts/Base.astro`.
-The menu collapses to the hamburger at 1040px wide. The full header needs about 1035px (10 items); if you add a menu item, measure again.
+The menu collapses to the hamburger at 1100px wide. The full header needs about 1085px (11 items); if you add a menu item, measure again.
 
 ## Links page (`src/pages/links.astro`)
 

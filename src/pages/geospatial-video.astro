@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoCard from '../components/VideoCard.astro';
+
+const CH = 'https://www.youtube.com/playlist?list=';
+const playlists = {
+  firis: `${CH}PL0RLIF82BUhnhaZJUx0XSb5qtqqrJx8vc`,
+  uas: `${CH}PL0RLIF82BUhmc7ovS2VF1nKJf7_14S0Wv`,
+};
+
+// What the metadata in a geospatial video stream puts on the map.
+const pieces = [
+  ['Where the camera is', 'The aircraft, drone or phone shows on the map as a moving marker, with its altitude and heading.'],
+  ['Where it is looking', 'The sensor point of interest: the spot on the ground at the center of the frame, updated as the gimbal moves.'],
+  ['What it can see', 'The footprint: the outline of the ground inside the frame, drawn on the map as it sweeps.'],
+  ['Who else can see it', 'Anyone on the TAK Server can tap the marker and open the same feed, on ATAK, WinTAK or CloudTAK.'],
+];
+---
+<Base title="Geospatial Video" description="Crewed aircraft, drone and ground video in TAK, placed on the map: where the camera is, where it is looking, and augmented reality in the video itself. With FIRIS, UAS Tool, AVO, SmartCam3D and infra-TAK's video server.">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>Geospatial Video</h1>
+        <p>A plain video feed shows you <em>what</em> is happening. Geospatial video also shows you <em>where</em>. The stream carries metadata from the camera, so TAK puts the video on the map: where the aircraft or drone is, where the camera points, and what part of the ground is in the frame. On an incident, that is the difference between “there’s fire on a ridge” and “there’s fire on <strong>that</strong> ridge, right above our crews.”</p>
+      </div>
+
+      <div class="gv-pieces">
+        {pieces.map(([h, p], i) => (
+          <div class="gv-piece"><span class="card-num">0{i + 1}</span><h3>{h}</h3><p>{p}</p></div>
+        ))}
+      </div>
+      <p class="section-note">Aircraft and drone video usually carries this as KLV metadata (MISB 0601). TAK reads it and draws the camera, its point of interest and its footprint on the map, next to everything else your team is already sharing.</p>
+
+      <!-- ===== Crewed aircraft ===== -->
+      <h2 class="section-title" id="aircraft"><b>01</b> Crewed aircraft: airborne ISR</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Intel aircraft fly over fires and other incidents with stabilized EO/IR cameras. In California, Cal OES <strong>FIRIS</strong> aircraft stream geospatial video into TAK, so crews on the ground and staff at the ICP can watch the same feed, already placed on their map.</p>
+          <p>The same aircraft map the fire perimeter and push it into TAK. The video shows what is happening now; the perimeter shows where the edge was at the last pass. Together they answer “what” and “where” at the same time.</p>
+          <div class="btn-row"><a class="btn btn-ghost" href={playlists.firis}>FIRIS TAK playlist on YouTube</a></div>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="8P567UDX00A" title="Cal OES FIRIS ATAK Integration" note="The FIRIS aircraft and TAK, 4:45" />
+          <VideoCard id="p5FpVHteo6s" title="TAK Offsite 2025: Wildfire Geospatial Intel" note="Talk, 19 min" />
+        </div>
+      </div>
+
+      <!-- ===== UAS ===== -->
+      <h2 class="section-title" id="uas"><b>02</b> Drones (UAS)</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p><strong>A drone is the same idea on a smaller aircraft.</strong> Its camera has a position, a heading and a gimbal angle, and its video can carry the same metadata as an intel aircraft. In ATAK, the <strong>UAS Tool</strong> plugin puts the drone, its sensor point of interest and its footprint on the map, and shows the video next to it. Drone teams share that picture with everyone else through TAK Server, and plan flights with tasks and Data Sync.</p>
+          <p>Fleet platforms work the same way through CloudTAK: ETLs bring in drones from DJI FlightHub 2, Skydio, BRINC, DroneSense and others. See the <a href="/cloudtak/#etls-aircraft">aircraft and drone ETLs</a>.</p>
+          <div class="btn-row"><a class="btn btn-ghost" href={playlists.uas}>ATAK UAS-Tool playlist on YouTube</a></div>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="4NiLRmYCOEo" title="ATAK UAS Tool" note="What the plugin does" />
+          <VideoCard id="ms8NllieMNM" title="UAS Tool: comprehensive review" note="Every part of the plugin" />
+        </div>
+      </div>
+
+      <!-- ===== Ground ===== -->
+      <h2 class="section-title" id="ground"><b>03</b> Ground video</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Not every camera flies. Ground video gets the same treatment when TAK knows where the camera is:</p>
+          <ul>
+            <li><strong>Phones.</strong> <a href="https://github.com/jpat-12/TAK-PluginSuite-ATAK_ICU">ATAK-ICU</a> turns a phone’s own camera into a live feed on the map. The phone’s marker carries the video, so anyone can tap it and see what that person sees. No drone needed. There is a WinTAK version too.</li>
+            <li><strong>Fixed cameras.</strong> <a href="/plugins/cam-depot/">Cam Depot</a> puts public traffic and fire cameras on the ATAK map, each at its real location. CloudTAK has a <a href="/cloudtak/#plugins">Cam Depot plugin</a>, and ETLs for camera systems such as Verkada and ALERTWest.</li>
+          </ul>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="qw0PF617VSE" title="Cam Depot ATAK plugin" note="Public cameras on the map" />
+        </div>
+      </div>
+
+      <!-- ===== AR ===== -->
+      <h2 class="section-title" id="ar"><b>04</b> Augmented reality: the map inside the video</h2>
+      <div class="prose gv-lede">
+        <p>Even with the video on the map, an operator still cross-cues: look at the video, find the same spot on the 2D map, look back, repeat. Augmented reality removes that step. It draws the map <em>into</em> the video: your markers, your units, road names and points of interest, right on top of the ground they belong to.</p>
+      </div>
+
+      <div class="gv-ar">
+        <section class="gv-ar-card">
+          <span class="repo-tag">ATAK plugin</span>
+          <h3>AVO: AR Video Overlay</h3>
+          <p>AVO brings augmented reality into ATAK’s video player. Map items show up in the video where they really are, and you set their size and opacity. A newer version adds <strong>lock map to gimbal heading</strong>: the map turns with the camera, so the map and the video always face the same way.</p>
+          <div class="gv-videos two">
+            <VideoCard id="47KehKEqRgw" title="AVO: lock map to gimbal heading" note="2 min" />
+            <VideoCard id="en2kNHhSOkg" title="AVO preferences" note="AR feature size and opacity, 3 min" />
+          </div>
+        </section>
+
+        <section class="gv-ar-card">
+          <span class="repo-tag">Parsons · ATAK and WinTAK plugins</span>
+          <h3>SmartCam3D</h3>
+          <p><a href="https://www.parsons.com/products/smartcam3d/">SmartCam3D</a> does the augmented reality and adds <strong>video annotation</strong>. You work in the video as if it were the map:</p>
+          <ul>
+            <li>Roads, street names, points of interest and your own KML/KMZ drawn into the live video.</li>
+            <li>Mark targets, draw lines and polygons, add text and free-hand telestrate on the video. Each mark has a real location, so it goes to the map and to the rest of the team.</li>
+            <li>Measure range, bearing and area, look up elevation and addresses, all inside the video.</li>
+            <li>Cross-cueing cursors: point in the video and the map follows, or the other way around.</li>
+          </ul>
+          <p class="section-note">It works with KLV video (MISB 0601, STANAG 4609), from small drones up to crewed aircraft with large EO/IR gimbals, and with TAK Server. SmartCam3D is a licensed product; contact Parsons for access.</p>
+          <div class="gv-videos two">
+            <VideoCard id="Vl9Ht8G8Pcw" title="ATAK geospatial video" note="5 min" />
+            <VideoCard id="-QvfmfUfo0o" title="Watch, Annotate, Respond: Geospatial Video in TAK" note="Talk with Damien Giuliani (FIRIS), 39 min" />
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== Back end ===== -->
+      <h2 class="section-title" id="server"><b>05</b> The back end is ready to go</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Video from an aircraft, a drone or a phone needs a server in the middle: something that takes the stream in, and hands it out to every ATAK, WinTAK and CloudTAK user who opens it. <a href="/infra-tak/">infra-TAK</a> deploys that server from its console, next to TAK Server. Choose one:</p>
+          <ul>
+            <li><strong>MediaMTX</strong>, set up by infra-TAK: RTSP, RTSPS, SRT and HLS, with a web editor for its settings.</li>
+            <li><strong>TAK Video Restreamer</strong>: MediaMTX and FFmpeg in one container, with RTSP, RTSPS, SRT, RTMP, adaptive HLS and <strong>KLV</strong> passthrough, and its own admin login.</li>
+          </ul>
+          <p>infra-TAK also runs CloudTAK’s media service, so the same feeds play in the browser. SSL, ports and logins are handled for you. Point the drone or the encoder at the server, share the feed, and it is on everyone’s map.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="/infra-tak/">infra-TAK install guide</a>
+            <a class="btn btn-ghost" href="https://github.com/takwerx/mediamtx-installer">MediaMTX on its own</a>
+          </div>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="2jgHcDA8oOw" title="MediaMTX video server for the ATAK UAS Tool" note="Server set-up" />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    // Swap a thumbnail for the YouTube player when clicked.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a.vthumb[data-yt]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      var d = document.createElement('div');
+      d.className = 'embed';
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt + '?autoplay=1';
+      f.title = a.getAttribute('aria-label').replace(/^Play: /, '');
+      f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      d.appendChild(f);
+      a.replaceWith(d);
+    });
+  </script>
+</Base>

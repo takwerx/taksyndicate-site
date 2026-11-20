@@ -1,0 +1,13 @@
+---
+// A YouTube video as a thumbnail (public/images/video/<id>.webp) that turns into the
+// player on click, so a page with many videos stays light. Without JavaScript it is a
+// plain link to YouTube. The click handler lives once in the page (see geospatial-video.astro).
+const { id, title, note } = Astro.props;
+---
+<figure class="vcard">
+  <a class="vthumb" href={`https://www.youtube.com/watch?v=${id}`} data-yt={id} aria-label={`Play: ${title}`}>
+    <img src={`/images/video/${id}.webp`} alt="" width="960" height="540" loading="lazy" />
+    <span class="vplay" aria-hidden="true"></span>
+  </a>
+  <figcaption><strong>{title}</strong>{note && <span>{note}</span>}</figcaption>
+</figure>
