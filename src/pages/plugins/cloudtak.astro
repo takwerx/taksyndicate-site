@@ -42,7 +42,7 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
 
       <div class="plug-grid">
         {plugins.map((p) => (
-          <a class="plug-card" href={`https://github.com/${p.repo}`} data-tags={p.tags.join(' ')}>
+          <a class="plug-card ct-card" href={`https://github.com/${p.repo}`} data-tags={p.tags.join(' ')}>
             <span class="plug-icon mono" style={`--c: ${disciplines[p.tags[0]]?.c ?? 'var(--accent)'}`} aria-hidden="true">{initials(p.name)}</span>
             <span class="plug-top">
               <h3>{p.name}</h3>
@@ -58,8 +58,8 @@ const month = (iso) => iso && new Date(iso).toLocaleDateString('en-US', { month:
               {p.region && <span>{p.region}</span>}
               {p.license && <span>{p.license}</span>}
               {p.updated && <span>Updated {month(p.updated)}</span>}
-              <span class="gh">GitHub ↗</span>
             </span>
+            <span class="ct-cta"><span class="ct-repo">github.com/{p.repo}</span>Learn more on GitHub →</span>
           </a>
         ))}
       </div>
