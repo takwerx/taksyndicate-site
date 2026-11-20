@@ -112,12 +112,12 @@ const pieces = [
       <!-- ===== Back end ===== -->
       <h2 class="section-title" id="server"><b>05</b> The back end: infra-TAK deploys your video server</h2>
       <div class="prose gv-lede">
-        <p>Video from an aircraft, a drone or a phone needs a server in the middle: one that takes the stream in and hands it to every ATAK, WinTAK and CloudTAK user who opens it. <a href="/infra-tak/">infra-TAK</a> deploys that server for you from its console, next to TAK Server, with SSL, ports and logins done. You choose one of two, and both run <strong>MediaMTX</strong> underneath:</p>
+        <p>Video from an aircraft, a drone or a phone needs a server in the middle: one that takes the stream in and hands it to every ATAK, WinTAK and CloudTAK user who opens it. <a href="/infra-tak/">infra-TAK</a> deploys that server for you from its console, next to TAK Server, with SSL, ports and logins done. There are three options, and all of them run <strong>MediaMTX</strong> underneath:</p>
         <ul>
           <li><strong>TAK Video Restreamer</strong>: MediaMTX and FFmpeg in one container, with RTSP, RTSPS, SRT, RTMP, adaptive HLS and <strong>KLV</strong> passthrough, and its own admin login.</li>
           <li><strong>MediaMTX from TAKwerx</strong>: MediaMTX set up by infra-TAK, with RTSP, RTSPS, SRT and HLS, and a web editor for its settings.</li>
+          <li><strong>CloudTAK’s own MediaMTX</strong>: when infra-TAK deploys <a href="/cloudtak/">CloudTAK</a>, the video server comes with it. CloudTAK ships with MediaMTX under the hood, so video plays in the browser. It also works as a standalone video server for UAS Tool and the ATAK-ICU plugin.</li>
         </ul>
-        <p>infra-TAK also runs CloudTAK’s media service, so the same feeds play in the browser.</p>
         <div class="btn-row"><a class="btn btn-primary" href="/infra-tak/">infra-TAK install guide</a></div>
       </div>
     </div>
