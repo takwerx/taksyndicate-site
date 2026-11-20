@@ -1,7 +1,7 @@
 ---
 // A YouTube video as a thumbnail (public/images/video/<id>.webp) that turns into the
 // player on click, so a page with many videos stays light. Without JavaScript it is a
-// plain link to YouTube. The click handler lives once in the page (see geospatial-video.astro).
+// plain link to YouTube. Astro bundles the script below once per page.
 const { id, title, note } = Astro.props;
 ---
 <figure class="vcard">
@@ -11,3 +11,21 @@ const { id, title, note } = Astro.props;
   </a>
   <figcaption><strong>{title}</strong>{note && <span>{note}</span>}</figcaption>
 </figure>
+
+<script>
+  // Swap a thumbnail for the YouTube player when clicked.
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest?.('a.vthumb[data-yt]') as HTMLAnchorElement | null;
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    const d = document.createElement('div');
+    d.className = 'embed';
+    const f = document.createElement('iframe');
+    f.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1`;
+    f.title = (a.getAttribute('aria-label') || '').replace(/^Play: /, '');
+    f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    d.appendChild(f);
+    a.replaceWith(d);
+  });
+</script>

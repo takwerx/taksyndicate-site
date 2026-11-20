@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoCard from '../components/VideoCard.astro';
+import cloudtak from '../data/cloudtak.json';
+
+const UAS_PLAYLIST = 'https://www.youtube.com/playlist?list=PL0RLIF82BUhmc7ovS2VF1nKJf7_14S0Wv';
+
+// CloudTAK ETLs and plugins that bring drones, and the airspace around them, into the picture.
+// Pulled from the CloudTAK data so names, descriptions and links stay current.
+const pick = (list, repos) => repos.map((r) => list.find((x) => x.repo.toLowerCase() === r.toLowerCase())).filter(Boolean);
+const fleetEtls = pick(cloudtak.etls || [], [
+  'dfpc-coe/etl-dji-flight-hub', 'dfpc-coe/etl-skydio', 'dfpc-coe/etl-brinc', 'dfpc-coe/etl-drone-sense', 'dfpc-coe/etl-air-data',
+]);
+const fleetPlugins = pick(cloudtak.plugins || [], ['clptak/cloudtak-plugin-skydio']);
+const airspaceEtls = pick(cloudtak.etls || [], [
+  'clptak/cloudtak-etl-tfr', 'dfpc-coe/etl-drone-tag', 'dfpc-coe/etl-adsbx', 'dfpc-coe/etl-spider-tracks',
+]);
+const shortHref = (h) => h.replace(/^https:\/\//, '');
+---
+<Base title="UAS" description="Drones in TAK: fly and stream from ATAK with the UAS Tool, put drone fleets on the common operating picture, turn drone photos into maps, and keep track of the airspace around you.">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>UAS: Drones in TAK</h1>
+        <p>In TAK, a drone is one more member of the team on the map. Everyone sees where it is, what its camera sees, and what it mapped, on the same picture as the crews, the vehicles and the incident. This page covers the whole drone side: flying from ATAK, bringing drone fleets into the common operating picture, turning drone photos into maps, and the airspace around you.</p>
+        <nav class="ct-jump" aria-label="On this page">
+          <a href="#fly">Fly from ATAK</a>
+          <a href="#video">Video</a>
+          <a href="#fleets">Fleets</a>
+          <a href="#mapping">Mapping</a>
+          <a href="#airspace">Airspace</a>
+          <a href="#people">Who builds it</a>
+        </nav>
+      </div>
+
+      <!-- ===== Fly ===== -->
+      <h2 class="section-title" id="fly"><b>01</b> Fly from ATAK: the UAS Tool</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>The <strong>UAS Tool</strong> plugin connects ATAK to the aircraft. Install ATAK and UAS Tool on the drone’s own controller, for example a DJI controller, and the pilot flies with the TAK map in hand:</p>
+          <ul>
+            <li>The drone, its sensor point of interest and its footprint go on the map for everyone on the TAK Server.</li>
+            <li>The video comes with it, with augmented reality: map items drawn into the live picture.</li>
+            <li>Quick flight tasks from the map, and <strong>Data Sync</strong> to share the mission’s items with the rest of the incident.</li>
+          </ul>
+          <p>DJI, Parrot and Red Cat all list UAS Tool support. See the drone makers on the <a href="/links/">Links page</a>.</p>
+          <div class="btn-row"><a class="btn btn-primary" href={UAS_PLAYLIST}>ATAK UAS-Tool playlist on YouTube</a></div>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="4NiLRmYCOEo" title="ATAK UAS Tool" note="What the plugin does, 5:44" />
+        </div>
+      </div>
+      <div class="uas-videos">
+        <VideoCard id="ms8NllieMNM" title="UAS Tool: comprehensive review" note="Corona Fire Dept (CA) drone program, 36 min" />
+        <VideoCard id="AB5iRL_NJ6Y" title="Install on a DJI controller" note="ATAK, UAS Tool and DTED, 11 min" />
+        <VideoCard id="gAZOuJr3vhg" title="UAS Tool basic settings" note="Link the aircraft, fly with AR, 25 min" />
+        <VideoCard id="7d3qjOBrhnE" title="Tasks and Data Sync" note="Quick flight tasks, sharing, 14 min" />
+        <VideoCard id="HpYpWLtnJHk" title="DJI photo and video mode" note="2 min" />
+      </div>
+
+      <!-- ===== Video ===== -->
+      <h2 class="section-title" id="video"><b>02</b> See what the drone sees</h2>
+      <div class="uas-callout">
+        <div>
+          <p>Drone video is <strong>geospatial video</strong>: it carries where the camera is and where it is looking, so TAK places it on the map. Augmented reality (AVO, SmartCam3D) goes one step further and draws your map into the video. And <a href="/infra-tak/">infra-TAK</a> deploys the video server the drone streams to.</p>
+        </div>
+        <a class="btn btn-primary" href="/geospatial-video/">The Geospatial Video page</a>
+      </div>
+
+      <!-- ===== Fleets ===== -->
+      <h2 class="section-title" id="fleets"><b>03</b> Drone fleets on the common operating picture</h2>
+      <p class="section-note">Agencies that run drones through a fleet or dock platform can bring every aircraft into the picture at once. In CloudTAK, these ETLs and plugins pull drone positions, and some pull video and alerts, from the platform’s own API. All free, with the source on GitHub. More on the <a href="/cloudtak/">CloudTAK page</a>.</p>
+      <div class="uas-list">
+        {[...fleetEtls.map((e) => ({ ...e, kind: 'CloudTAK ETL' })), ...fleetPlugins.map((p) => ({ ...p, kind: 'CloudTAK plugin' }))].map((x) => (
+          <a class="uas-item" href={x.href}>
+            <span class="repo-tag">{x.kind}</span>
+            <strong>{x.name}</strong>
+            <span class="uas-desc">{x.description}</span>
+            <span class="ct-repo">{shortHref(x.href)}</span>
+          </a>
+        ))}
+      </div>
+
+      <!-- ===== Mapping ===== -->
+      <h2 class="section-title" id="mapping"><b>04</b> Turn drone photos into maps</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>A drone can map a fire, a flood or a search area in minutes, at a detail no satellite image has. The result, an <strong>orthomosaic</strong>, goes into TAK as a map layer everyone can see.</p>
+          <ul>
+            <li><strong>WebODM in infra-TAK.</strong> <a href="/infra-tak/">infra-TAK</a> deploys WebODM, the open-source drone mapping app, with the <a href="https://github.com/Humble-Helper-96/webodm-tak-overlay">TAK Incident Overlay</a> plugin: upload GPS-tagged drone photos and an incident name, and get back a georeferenced overlay ready for TAK. It also hosts 3D photogrammetry tiles with Cesium.</li>
+            <li><strong>Make it small enough to share.</strong> A full-size orthomosaic is too big to send to phones. <a href="https://github.com/AM-Ripple2/map-compressor">Map Compressor</a> shrinks large GeoTIFFs and orthomosaics into small, see-through overlays for ATAK, iTAK, TAK Aware and CloudTAK. QGIS can do it by hand.</li>
+          </ul>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="SogClTeS0Lw" title="Orthomosaic imagery in TAK" note="8 min" />
+          <VideoCard id="FDGLoSGkK8E" title="Compress a large ortho for ATAK with QGIS" note="930 MB down to 10%, 8 min" />
+        </div>
+      </div>
+
+      <!-- ===== Airspace ===== -->
+      <h2 class="section-title" id="airspace"><b>05</b> Know the airspace</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Drones share the sky with helicopters, air tankers and other drones. TAK puts that airspace on the same map:</p>
+          <ul>
+            <li><strong><a href="/plugins/air-aware/">AirAware</a></strong> (ATAK): restrictions, airspace classes, special use airspace, UAS ceilings, obstacles and airfield conditions, with a UAS flight planner.</li>
+            <li><strong>CloudTAK ETLs</strong> for temporary flight restrictions, Remote ID drones and crewed aircraft:</li>
+          </ul>
+        </div>
+        <div class="uas-list one">
+          {airspaceEtls.map((x) => (
+            <a class="uas-item" href={x.href}>
+              <span class="repo-tag">CloudTAK ETL</span>
+              <strong>{x.name}</strong>
+              <span class="uas-desc">{x.description}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- ===== People ===== -->
+      <h2 class="section-title" id="people"><b>06</b> Who builds drone tools for TAK</h2>
+      <div class="prose gv-lede">
+        <p><a href="https://www.droneresponders.org/post/droneresponders-and-tak">DRONERESPONDERS</a> runs a TAK working group for public safety drone programs. Drone makers, integrators and trainers that work with TAK are on the <a href="/links/">Links page</a>, under Drones, with YouTube channels such as EOTAK (UAS Tool training) and RotorLab (drones into ATAK).</p>
+      </div>
+    </div>
+  </main>
+</Base>

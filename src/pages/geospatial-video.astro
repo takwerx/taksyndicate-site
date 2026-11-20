@@ -51,7 +51,7 @@ const pieces = [
         <div class="prose">
           <p><strong>A drone is the same idea on a smaller aircraft.</strong> Its camera has a position, a heading and a gimbal angle, and its video can carry the same metadata as an intel aircraft. In ATAK, the <strong>UAS Tool</strong> plugin puts the drone, its sensor point of interest and its footprint on the map, and shows the video next to it. Drone teams share that picture with everyone else through TAK Server, and plan flights with tasks and Data Sync.</p>
           <p>Fleet platforms work the same way through CloudTAK: ETLs bring in drones from DJI FlightHub 2, Skydio, BRINC, DroneSense and others. See the <a href="/cloudtak/#etls-aircraft">aircraft and drone ETLs</a>.</p>
-          <div class="btn-row"><a class="btn btn-ghost" href={playlists.uas}>ATAK UAS-Tool playlist on YouTube</a></div>
+          <div class="btn-row"><a class="btn btn-primary" href="/uas/">More on drones: the UAS page</a><a class="btn btn-ghost" href={playlists.uas}>ATAK UAS-Tool playlist</a></div>
         </div>
         <div class="gv-videos">
           <VideoCard id="4NiLRmYCOEo" title="ATAK UAS Tool" note="What the plugin does" />
@@ -110,42 +110,17 @@ const pieces = [
       </div>
 
       <!-- ===== Back end ===== -->
-      <h2 class="section-title" id="server"><b>05</b> The back end is ready to go</h2>
-      <div class="gv-split">
-        <div class="prose">
-          <p>Video from an aircraft, a drone or a phone needs a server in the middle: something that takes the stream in, and hands it out to every ATAK, WinTAK and CloudTAK user who opens it. <a href="/infra-tak/">infra-TAK</a> deploys that server from its console, next to TAK Server. Choose one:</p>
-          <ul>
-            <li><strong>MediaMTX</strong>, set up by infra-TAK: RTSP, RTSPS, SRT and HLS, with a web editor for its settings.</li>
-            <li><strong>TAK Video Restreamer</strong>: MediaMTX and FFmpeg in one container, with RTSP, RTSPS, SRT, RTMP, adaptive HLS and <strong>KLV</strong> passthrough, and its own admin login.</li>
-          </ul>
-          <p>infra-TAK also runs CloudTAK’s media service, so the same feeds play in the browser. SSL, ports and logins are handled for you. Point the drone or the encoder at the server, share the feed, and it is on everyone’s map.</p>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="/infra-tak/">infra-TAK install guide</a>
-            <a class="btn btn-ghost" href="https://github.com/takwerx/mediamtx-installer">MediaMTX on its own</a>
-          </div>
-        </div>
-        <div class="gv-videos">
-          <VideoCard id="2jgHcDA8oOw" title="MediaMTX video server for the ATAK UAS Tool" note="Server set-up" />
-        </div>
+      <h2 class="section-title" id="server"><b>05</b> The back end: infra-TAK deploys your video server</h2>
+      <div class="prose gv-lede">
+        <p>Video from an aircraft, a drone or a phone needs a server in the middle: one that takes the stream in and hands it to every ATAK, WinTAK and CloudTAK user who opens it. <a href="/infra-tak/">infra-TAK</a> deploys that server for you from its console, next to TAK Server, with SSL, ports and logins done. You choose one of two, and both run <strong>MediaMTX</strong> underneath:</p>
+        <ul>
+          <li><strong>TAK Video Restreamer</strong>: MediaMTX and FFmpeg in one container, with RTSP, RTSPS, SRT, RTMP, adaptive HLS and <strong>KLV</strong> passthrough, and its own admin login.</li>
+          <li><strong>MediaMTX from TAKwerx</strong>: MediaMTX set up by infra-TAK, with RTSP, RTSPS, SRT and HLS, and a web editor for its settings.</li>
+        </ul>
+        <p>infra-TAK also runs CloudTAK’s media service, so the same feeds play in the browser.</p>
+        <div class="btn-row"><a class="btn btn-primary" href="/infra-tak/">infra-TAK install guide</a></div>
       </div>
     </div>
   </main>
 
-  <script is:inline>
-    // Swap a thumbnail for the YouTube player when clicked.
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('a.vthumb[data-yt]');
-      if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
-      e.preventDefault();
-      var d = document.createElement('div');
-      d.className = 'embed';
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt + '?autoplay=1';
-      f.title = a.getAttribute('aria-label').replace(/^Play: /, '');
-      f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
-      f.allowFullscreen = true;
-      d.appendChild(f);
-      a.replaceWith(d);
-    });
-  </script>
 </Base>
