@@ -24,6 +24,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
         <h1>UAS: Drones in TAK</h1>
         <p>In TAK, a drone is one more member of the team on the map. Everyone sees where it is, what its camera sees, and what it mapped, on the same picture as the crews, the vehicles and the incident. This page covers the whole drone side: flying from ATAK, bringing drone fleets into the common operating picture, turning drone photos into maps, and the airspace around you.</p>
         <nav class="ct-jump" aria-label="On this page">
+          <a href="#setup">What it takes</a>
           <a href="#fly">Fly from ATAK</a>
           <a href="#video">Video</a>
           <a href="#fleets">Fleets</a>
@@ -33,8 +34,33 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
         </nav>
       </div>
 
+      <!-- ===== Setup ===== -->
+      <h2 class="section-title" id="setup"><b>01</b> What it takes to get a drone flying with TAK</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>ATAK does not fly a drone on its own. The <strong>UAS Tool</strong> plugin talks to the aircraft in the aircraft’s own language, and then puts the drone, its camera and its controls inside ATAK. How much you can do from ATAK depends on that language. UAS Tool only shows the functions the aircraft gives it.</p>
+          <ul>
+            <li><strong>MAVLink.</strong> The open messaging protocol of autopilots such as PX4 and ArduPilot. With MAVLink, a lot is possible: arm, take off, go to a point, orbit, waypoint missions, geofences, flight modes, return to launch, compass and accelerometer calibration, and the autopilot’s own settings. Many aircraft speak it, and ATAK DroneSim gives you a simulated MAVLink aircraft to train on.</li>
+            <li><strong>The drone maker’s SDK.</strong> DJI, Parrot, Autel and others give developers a software kit (SDK) for their aircraft. UAS Tool uses that SDK to fly the aircraft from ATAK, and it can also reach the maker’s own settings: camera settings, camera switching, zoom, gimbal and more. What you get depends on what the maker’s SDK opens up. UAS Tool works with DJI, Parrot, Skydio, Teal, Autel and more. DJI aircraft connect through the <strong>ATAK Go</strong> app; with ATAK Go v5, the app must be in the foreground to arm.</li>
+          </ul>
+          <p>Then you need:</p>
+          <ul>
+            <li><strong>ATAK and UAS Tool</strong> on the device that talks to the drone: the drone’s own controller, or an Android device on the same network as the ground station radio.</li>
+            <li><strong>A TAK Server</strong>, so everyone else sees the drone, and a <a href="/geospatial-video/#server">video server</a> for the feed.</li>
+            <li><strong>Pre-flight checks</strong> in UAS Tool: return-to-launch altitude, lost-link and geofence behavior, battery failsafes, and the controller mapping.</li>
+          </ul>
+        </div>
+        <div class="uas-list one">
+          <div class="uas-item">
+            <span class="repo-tag">No SDK needed</span>
+            <strong>UAS Relay</strong>
+            <span class="uas-desc">Fly in DJI’s own app and still put the drone on the map. <a href="https://github.com/RyanR3/UASRelay">UAS Relay</a> sends the flight app’s live view to a MediaMTX server and drops a drone marker with the video attached, over TAK Server or multicast. It uses the drone’s Remote ID for position when it can hear it. It works with drones that have no SDK support, such as the DJI Neo. Free and open source, by RyanR3.</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ===== Fly ===== -->
-      <h2 class="section-title" id="fly"><b>01</b> Fly from ATAK: the UAS Tool</h2>
+      <h2 class="section-title" id="fly"><b>02</b> Fly from ATAK: the UAS Tool</h2>
       <div class="gv-split">
         <div class="prose">
           <p>The <strong>UAS Tool</strong> plugin connects ATAK to the aircraft. Install ATAK and UAS Tool on the drone’s own controller, for example a DJI controller, and the pilot flies with the TAK map in hand:</p>
@@ -59,7 +85,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
       </div>
 
       <!-- ===== Video ===== -->
-      <h2 class="section-title" id="video"><b>02</b> See what the drone sees</h2>
+      <h2 class="section-title" id="video"><b>03</b> See what the drone sees</h2>
       <div class="uas-callout">
         <div>
           <p>Drone video is <strong>geospatial video</strong>: it carries where the camera is and where it is looking, so TAK places it on the map. Augmented reality (AVO, SmartCam3D) goes one step further and draws your map into the video. And <a href="/infra-tak/">infra-TAK</a> deploys the video server the drone streams to.</p>
@@ -68,7 +94,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
       </div>
 
       <!-- ===== Fleets ===== -->
-      <h2 class="section-title" id="fleets"><b>03</b> Drone fleets on the common operating picture</h2>
+      <h2 class="section-title" id="fleets"><b>04</b> Drone fleets on the common operating picture</h2>
       <p class="section-note">Agencies that run drones through a fleet or dock platform can bring every aircraft into the picture at once. In CloudTAK, these ETLs and plugins pull drone positions, and some pull video and alerts, from the platform’s own API. All free, with the source on GitHub. More on the <a href="/cloudtak/">CloudTAK page</a>.</p>
       <div class="uas-list">
         {[...fleetEtls.map((e) => ({ ...e, kind: 'CloudTAK ETL' })), ...fleetPlugins.map((p) => ({ ...p, kind: 'CloudTAK plugin' }))].map((x) => (
@@ -82,7 +108,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
       </div>
 
       <!-- ===== Mapping ===== -->
-      <h2 class="section-title" id="mapping"><b>04</b> Turn drone photos into maps</h2>
+      <h2 class="section-title" id="mapping"><b>05</b> Turn drone photos into maps</h2>
       <div class="gv-split">
         <div class="prose">
           <p>A drone can map a fire, a flood or a search area in minutes, at a detail no satellite image has. The result, an <strong>orthomosaic</strong>, goes into TAK as a map layer everyone can see.</p>
@@ -98,7 +124,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
       </div>
 
       <!-- ===== Airspace ===== -->
-      <h2 class="section-title" id="airspace"><b>05</b> Know the airspace</h2>
+      <h2 class="section-title" id="airspace"><b>06</b> Know the airspace</h2>
       <div class="gv-split">
         <div class="prose">
           <p>Drones share the sky with helicopters, air tankers and other drones. TAK puts that airspace on the same map:</p>
@@ -119,7 +145,7 @@ const shortHref = (h) => h.replace(/^https:\/\//, '');
       </div>
 
       <!-- ===== People ===== -->
-      <h2 class="section-title" id="people"><b>06</b> Who builds drone tools for TAK</h2>
+      <h2 class="section-title" id="people"><b>07</b> Who builds drone tools for TAK</h2>
       <div class="prose gv-lede">
         <p><a href="https://www.droneresponders.org/post/droneresponders-and-tak">DRONERESPONDERS</a> runs a TAK working group for public safety drone programs. Drone makers, integrators and trainers that work with TAK are on the <a href="/links/">Links page</a>, under Drones, with YouTube channels such as EOTAK (UAS Tool training) and RotorLab (drones into ATAK).</p>
       </div>
