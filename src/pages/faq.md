@@ -105,6 +105,8 @@ ATAK and TAK Aware have also been tested over T-Mobile's satellite service (T-Sa
 
 Many commercially available drones/UAS platforms can be used inside the TAK ecosystem via the ATAK UAS-Tool Plugin available on the Google Playstore. See the TAK Syndicate youtube channel for a brief introduction to the benefits of using a drone/UAS in ATAK.
 
+The [UAS page](/uas/) covers the rest: what it takes to get a drone flying with TAK (MAVLink, OEM SDKs, UAS Relay), drone video, fleet ETLs, mapping and airspace.
+
 ### How does TAK help with airspace awareness?
 
 TAK is one of the best places to bring the airspace together, because everything arrives as a point on the same shared map.
