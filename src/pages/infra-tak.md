@@ -30,6 +30,7 @@ browser — identity, certificates, SSL, video, automation and health monitoring
 - **MediaMTX** or **TAK Video Restreamer** — real-time video (RTSP, RTSPS, SRT, HLS, RTMP, KLV)
 - **Node-RED** — flow-based automation behind Authentik forward auth
 - **Email Relay** — outbound email for notifications and alerts
+- **[ATLAS](/atlas-mdm/)** — self-hosted device management (MDM) for Android devices that run ATAK
 - **Guard Dog** — health monitoring and auto-recovery across the whole stack
 
 ## Install

@@ -33,6 +33,7 @@ An **advocacy** site for the Team Awareness Kit. Nothing is for sale.
 | `src/pages/who-is-using-tak.astro` | Organizations using TAK |
 | `src/pages/takwerx.astro` | TAKwerx hub |
 | `src/pages/infra-tak.md` | infra-TAK install guide |
+| `src/pages/atlas-mdm.astro` | ATLAS MDM: self-hosted Android MDM for ATAK devices (cfd2474/TAK-MDM, an infra-TAK module). Facts come from that repo's README |
 | `src/pages/plugins/` | Plugin catalog, built from `src/data/plugins.json` (generated; extra fields in `plugin-meta.json`) |
 | `src/pages/cloudtak.astro` | CloudTAK: community plugins (TAK Portal Marketplace catalog) and ETLs (infra-TAK ETL catalog, dfpc-coe and TAK-NZ `etl-*` repos), built by `scripts/sync-cloudtak.mjs`. Hand edits go in `src/data/cloudtak-meta.json` |
 | `src/pages/geospatial-video.astro` | Geospatial Video: crewed aircraft, UAS and ground video, AR (AVO, SmartCam3D), video server. Videos use `src/components/VideoCard.astro` with thumbnails in `public/images/video/<id>.webp` |
@@ -43,7 +44,7 @@ An **advocacy** site for the Team Awareness Kit. Nothing is for sale.
 | `src/pages/atak-terminal.astro` | ATAK Terminal |
 
 Top menu items: `src/components/Nav.astro`. Shared layout and the site notice bar: `src/layouts/Base.astro`.
-The menu collapses to the hamburger at 1150px wide. The full header needs about 1132px (12 items); if you add a menu item, measure again.
+The menu collapses to the hamburger at 1200px wide. The full header needs about 1186px (13 items); if you add a menu item, measure again.
 
 ## Links page (`src/pages/links.astro`)
 

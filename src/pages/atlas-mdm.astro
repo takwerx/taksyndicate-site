@@ -1,0 +1,190 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoCard from '../components/VideoCard.astro';
+
+const REPO = 'https://github.com/cfd2474/TAK-MDM';
+
+// What ATLAS does once a fleet is real. From the ATLAS README; keep it in step with that.
+const features = [
+  { tag: 'Policies', name: 'Stacking you can explain', desc: 'Small policies (a password rule, an app catalog, a Wi-Fi network) stack on a device or a group. Every setting on a device names the policy that set it and what it overrode, and the console shows a conflict instead of quietly picking a winner.' },
+  { tag: 'ATAK', name: 'ATAK, plugins, maps and certificates', desc: 'Install ATAK and its plugins, set up TAK Server connections with certificate enrollment, and place map packs, DTED, data packages and preference files in ATAK’s own folders.' },
+  { tag: 'ATAK', name: 'One policy, a value per device', desc: 'Write ${device.name} or a custom attribute such as ${attribute.Unit} into an app or ATAK setting, and each device gets its own value. A fleet of callsigns needs one policy. Fill names and attributes from a CSV.' },
+  { tag: 'Apps', name: 'Your own app library', desc: 'Upload APK and XAPK files, or import ATAK plugins from the TPC and TAKwerx catalogs and apps from F-Droid, IzzyOnDroid, APKPure and Google Play. ATLAS refuses an upload that could not install in the field, and flags apps with a newer build waiting.' },
+  { tag: 'Field', name: 'Built for devices that go dark', desc: 'Each check-in gets one signed document with everything the device should have. A tablet that was offline for three weeks catches up in one check-in. Online devices pick up a policy change within a second.' },
+  { tag: 'Location', name: 'Location and geofences', desc: 'Devices report position on a schedule you set. Draw a fence and get an alert when a device leaves it.' },
+  { tag: 'Lockdown', name: 'Kiosk', desc: 'Lock a device to ATAK, or to a home screen you lay out with the ATLAS launcher. Release it by editing the policy, with no hands on the device.' },
+  { tag: 'Lockdown', name: 'Web filtering, radios and volume', desc: 'Allow and block sites across the whole device, with safe search. Hold Wi-Fi or Bluetooth on or off, block NFC on Android 15 and later, and hold volume levels.' },
+  { tag: 'Security', name: 'Compliance', desc: 'Minimum Android version, security-patch age, encryption, passcode, USB debugging off, minimum ATAK version, hardware integrity, and distrusted certificate authorities. After a grace period, a failing device can have apps suspended, be locked, or be wiped.' },
+  { tag: 'Security', name: 'Breach mode', desc: 'One button for a device in the wrong hands: it removes your apps, empties the folders you named, locks the device with your passcode and reports its position every minute. It is not a factory reset on purpose, because a wiped device stops telling you where it is.' },
+  { tag: 'Admin', name: 'Alerts, reports and audit log', desc: 'Email alerts for enrollment, policy failures, compliance failures, quiet devices and app updates. Fleet reports as CSV. Every console change is logged with who made it and from where.' },
+  { tag: 'ATAK', name: 'The ATLAS ATAK plugin', desc: 'Signed by the TAK Product Center for ATAK 5.6, 5.7 and 5.8. It reports from inside ATAK what is running, and lets updated plugins load without ATAK’s “Load plugin” prompt.' },
+];
+
+const knox = [
+  ['Per-app firewall', 'Allow, deny or redirect traffic by app, so a device talks only to your TAK Server.'],
+  ['Per-app VPN', 'Send ATAK through the tunnel and leave everything else off it.'],
+  ['Finer restrictions', 'USB by device class, Settings lockdown, microphone, camera and home key.'],
+  ['Enterprise Wi-Fi', 'EAP networks with certificates.'],
+  ['Certificate enrollment', 'SCEP-style issuance on the device, which maps onto TAK client certificates.'],
+  ['Knox Mobile Enrollment', 'Enrollment that survives a factory reset.'],
+];
+---
+<Base title="ATLAS MDM" description="ATLAS is a free, open-source, self-hosted mobile device manager for Android devices that run ATAK. Enroll with a QR code, then push ATAK, plugins, maps, certificates and settings from your own server. Installs through infra-TAK.">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <h1>ATLAS: device management for ATAK</h1>
+        <p><strong>ATLAS</strong> (ATAK Tactical Lifecycle &amp; Administration System) is a self-hosted mobile device manager (MDM) for Android phones and tablets that run ATAK. You run it on your own server, next to your TAK Server. Scan a QR code on a factory-reset device, and from then on it installs the apps, plugins, maps, certificates and settings you assign to it. No cloud subscription, no Google account on the device, no per-device license, and no data leaving your network. Free and open source (Apache 2.0).</p>
+        <nav class="ct-jump" aria-label="On this page">
+          <a href="#why">Why an MDM</a>
+          <a href="#how">How it works</a>
+          <a href="#enroll">Enroll</a>
+          <a href="#features">What it does</a>
+          <a href="#knox">Samsung Knox</a>
+          <a href="#get">Get it</a>
+        </nav>
+      </div>
+
+      <!-- ===== Why ===== -->
+      <h2 class="section-title" id="why"><b>01</b> Why an MDM for TAK devices</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Setting up one ATAK device by hand means sideloading the APK, installing plugins, copying map packs and DTED into the right folders, importing the server certificate and preferences, and locking the device down so nobody breaks it. Do that for fifty devices and it is a week of work. A month later, no two devices are the same.</p>
+          <p>Commercial MDMs solve the fleet problem, but they expect a cloud tenant, managed Google Play and a per-seat subscription. ATLAS starts from what TAK teams actually have:</p>
+          <ul>
+            <li><strong>No Google account on the device.</strong> Apps come from your own server.</li>
+            <li><strong>Connectivity that comes and goes.</strong> A device that was out of coverage for weeks catches up in one check-in.</li>
+            <li><strong>Small policies that stack.</strong> A password rule, an app catalog and a Wi-Fi network are separate policies, not one big profile you copy and edit.</li>
+            <li><strong>Your own hardware.</strong> Any Android 11 or later device that supports Device Owner mode, from Samsung’s rugged and enterprise lines to rugged tablets such as Tripltek’s.</li>
+          </ul>
+          <p>ATLAS is a general-purpose Android MDM at its core, so it manages the other apps on the device too. ATAK support is built in on top.</p>
+        </div>
+        <div class="gv-videos">
+          <VideoCard id="crZ9i5rcV_M" title="ATLAS overview" note="By the ATLAS developer" />
+        </div>
+      </div>
+
+      <!-- ===== How ===== -->
+      <h2 class="section-title" id="how"><b>02</b> How it works</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <ul>
+            <li><strong>The server</strong> runs in Docker on the same box as your TAK Server, as an <a href="/infra-tak/">infra-TAK</a> module. It holds your policies, your app library and your content files, and decides what each device should have.</li>
+            <li><strong>The agent</strong> is a small app that becomes the device’s owner during setup. Device Owner is the strongest management mode Android has: it can install and update apps silently, set passwords, lock the device to one app, set up Wi-Fi, place files and restrict features, all without a Google account. It uses only standard Android management APIs, so it behaves the same on every maker’s hardware.</li>
+            <li><strong>The console</strong> is a plain web app in your browser, behind infra-TAK’s Authentik login. It loads fast even on a laptop tethered to a phone.</li>
+            <li><strong>Two optional apps</strong> install only when a policy asks for them: the ATLAS launcher (a kiosk home screen) and the ATLAS filter (web filtering).</li>
+          </ul>
+          <p>Devices talk to the server only over mutual TLS, each with its own certificate. There is no login token to expire while a device is in the field.</p>
+        </div>
+        <div class="uas-list one">
+          <div class="uas-item">
+            <span class="repo-tag">Desired state</span>
+            <strong>Not a command stream</strong>
+            <span class="uas-desc">On each check-in, the device reports the version it holds. If the server has a newer one, it sends one signed document that describes everything the device should have: apps with their file hashes, files and where they go, settings and restrictions. The agent compares that with what is on the device and fixes the difference. There is no backlog of old commands to replay.</span>
+          </div>
+          <div class="uas-item">
+            <span class="repo-tag">Policies</span>
+            <strong>Merged field by field</strong>
+            <span class="uas-desc">Each policy fills in only the categories it needs: password, restrictions, apps, networks, files, kiosk, ATAK config, tracking, compliance, web filtering and more. The stricter rule wins for restrictions and password length, lists add up, and where two policies disagree the higher rank wins and the console shows the conflict.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Enroll ===== -->
+      <h2 class="section-title" id="enroll"><b>03</b> Enroll a device</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Enrollment takes about two minutes per device and needs nothing on the device first. The device must start from a factory reset, because Android lets an app become Device Owner only during the setup wizard.</p>
+          <ol>
+            <li>In the console, open <strong>Enroll</strong>. Pick the group the device joins and the Wi-Fi network it uses during setup. Generate the QR code.</li>
+            <li>On the factory-reset device, tap the welcome screen six times to open the QR scanner. Scan the code.</li>
+            <li>The device joins Wi-Fi, downloads the agent from your server and installs it as Device Owner.</li>
+            <li>The agent makes a key pair in the device’s secure hardware and gets its own certificate from your server.</li>
+            <li>The device shows up in the console within seconds and applies its group’s policies on the first check-in.</li>
+          </ol>
+        </div>
+        <div class="uas-list one">
+          <div class="uas-item">
+            <span class="repo-tag">QR codes</span>
+            <strong>Short-lived or permanent</strong>
+            <span class="uas-desc">A QR code expires in 15 minutes by default, so a photo of it stops working quickly. You can also limit it to a number of uses. For bulk onboarding, print a permanent QR for the provisioning bench and retire it later with one click.</span>
+          </div>
+          <div class="uas-item">
+            <span class="repo-tag">Re-enroll</span>
+            <strong>A wiped device keeps its record</strong>
+            <span class="uas-desc">Enroll a wiped device again and its name, group and history come back. It must first prove it is the same device, with its secure hardware or a security code from the console, so a leaked QR code cannot take over a managed device’s identity.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Features ===== -->
+      <h2 class="section-title" id="features"><b>04</b> What it does</h2>
+      <div class="uas-list">
+        {features.map((f) => (
+          <div class="uas-item">
+            <span class="repo-tag">{f.tag}</span>
+            <strong>{f.name}</strong>
+            <span class="uas-desc">{f.desc}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- ===== Knox ===== -->
+      <h2 class="section-title" id="knox"><b>05</b> Coming next: Samsung Knox</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>Knox support is in progress. Everything above works without Knox, and it will stay that way: Knox adds to ATLAS, it is never required, and non-Samsung devices keep working as they do today.</p>
+          <p>Samsung’s Knox Platform for Enterprise Premium is now free. You make your own license key in the Knox Admin Portal and paste it into the ATLAS console, and the agent activates it on each Samsung device. No Samsung partnership, no reseller, no Google.</p>
+          <p>ATLAS takes only the Knox features that standard Android has no answer for.</p>
+        </div>
+        <div class="uas-list one">
+          {knox.map(([name, desc]) => (
+            <div class="uas-item">
+              <span class="repo-tag">Knox</span>
+              <strong>{name}</strong>
+              <span class="uas-desc">{desc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- ===== Get it ===== -->
+      <h2 class="section-title" id="get"><b>06</b> Get it</h2>
+      <div class="gv-split">
+        <div class="prose">
+          <p>ATLAS installs from the <a href="/infra-tak/">infra-TAK</a> console. Pick the ATLAS module, and infra-TAK gets the current signed release, builds the container on your server, sets up the database, and loads the agent and launcher into the app library. Updates work the same way. Do not clone the repository and run it by hand: that skips the steps that make it work.</p>
+          <p>You need one DNS name and one more open port:</p>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>What</th><th>Port</th><th>Who connects</th></tr></thead>
+              <tbody>
+                <tr><td>Admin console at <code>atlas.&lt;your-domain&gt;</code></td><td>443</td><td>You, in a browser, behind Authentik</td></tr>
+                <tr><td>Device channel (mutual TLS)</td><td>8449</td><td>Enrolled devices</td></tr>
+                <tr><td>Agent download during setup</td><td>80</td><td>A factory-reset device</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Make an A record for <code>atlas.&lt;your-domain&gt;</code> that points to the server. The installer opens 8449 in the firewall, and Caddy gets the certificate. Devices in the field must reach port 80 during enrollment and 8449 after that, over the internet, a VPN or a private LTE network. Multi-agency setups get one hostname and one Authentik admin group per agency.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href={REPO}>ATLAS on GitHub</a>
+            <a class="btn btn-ghost" href={`${REPO}/releases`}>Releases</a>
+            <a class="btn btn-ghost" href="/infra-tak/">Install infra-TAK</a>
+          </div>
+        </div>
+        <div class="uas-list one">
+          <div class="uas-item">
+            <span class="repo-tag">Requirements</span>
+            <strong>What you need</strong>
+            <span class="uas-desc">A server running infra-TAK. Android 11 or later devices that support Device Owner mode. ATAK 5.6 or later.</span>
+          </div>
+          <div class="uas-item">
+            <span class="repo-tag">Who builds it</span>
+            <strong>TAK-Solutions LLC</strong>
+            <span class="uas-desc">ATLAS is built by Michael Leckliter (cfd2474) of TAK-Solutions LLC and released under Apache 2.0. Bug reports, feature requests and field experience are welcome as <a href={`${REPO}/issues`}>GitHub issues</a>. Name the device model, the Android or One UI version, and what the device page showed.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</Base>
