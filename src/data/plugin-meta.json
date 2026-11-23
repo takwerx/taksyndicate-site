@@ -1,5 +1,5 @@
 {
-  "_readme": "Hand-edited. Which disciplines each takwerx plugin serves (drives the filter chips on /plugins/), and the order plugins appear in. Tags: wildfire, hazmat, sar, le, ems, water, air, all, tools. Repos not listed here still appear, tagged 'all'. Optional: description (replaces the Market catalog description on the site), terminalOnly (true moves it off /plugins/ to the ATAK Terminal section of /takwerx/), video (YouTube ID shown on the plugin page), shots (screenshots you supply: [{ \"src\": \"/images/plugins/<slug>/01.webp\", \"alt\": \"caption\" }]).",
+  "_readme": "Hand-edited. Which disciplines each takwerx plugin serves (drives the filter chips on /plugins/), and the order plugins appear in. Tags: wildfire, hazmat, sar, le, ems, water, air, all, tools. Repos not listed here still appear, tagged 'all'. Optional: terminalOnly (true moves it off /plugins/ to the ATAK Terminal section of /takwerx/), video (YouTube ID shown on the plugin page), shots (screenshots you supply: [{ \"src\": \"/images/plugins/<slug>/01.webp\", \"alt\": \"caption\" }]).",
   "featured": "takwerx-market",
   "plugins": {
     "takwerx-market":  { "tags": ["tools"], "video": "ygcxS_dXIAU" },
@@ -20,7 +20,7 @@
     "dozer-country":   { "tags": ["wildfire"], "video": "fNSjuTXEhps" },
     "fobs":            { "tags": ["wildfire", "sar"] },
     "signal-df":       { "tags": ["sar", "le"] },
-    "mast":            { "tags": ["all", "tools"], "description": "Pick the mission and get its ATAK tools and plugins one tap away. Every mission page is customizable: choose which tools and plugins it shows and arrange them your way." },
+    "mast":            { "tags": ["all", "tools"] },
     "cursorwerx":      { "tags": ["tools"], "terminalOnly": true }
   }
 }

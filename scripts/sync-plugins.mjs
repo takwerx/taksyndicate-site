@@ -147,7 +147,6 @@ for (const [pkg, rs] of byPkg) {
   }
 
   const slug = newest.repo;
-  if (meta.plugins[slug]?.description) base.description = meta.plugins[slug].description;
   if (only && only !== slug) {
     const kept = prev.plugins.find((p) => p.slug === slug);
     if (kept) { plugins.push({ ...kept, ...base, slug, builds }); continue; }
