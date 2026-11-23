@@ -20,6 +20,7 @@
     "dozer-country":   { "tags": ["wildfire"], "video": "fNSjuTXEhps" },
     "fobs":            { "tags": ["wildfire", "sar"] },
     "signal-df":       { "tags": ["sar", "le"] },
+    "mast":            { "tags": ["all", "tools"] },
     "cursorwerx":      { "tags": ["tools"], "terminalOnly": true }
   }
 }
