@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { terminalPlugins } from '../lib/plugins.js';
+import VideoCard from '../components/VideoCard.astro';
 const GH = 'https://github.com/takwerx';
 ---
 <Base title="ATAK Terminal" description="TAKwerx ATAK Terminal: real ATAK with its real plugins in a window on your Mac or Windows PC. Free, open source, nothing leaves your machine.">
@@ -44,6 +45,10 @@ const GH = 'https://github.com/takwerx';
             </a>
           ))}
         </div>
+      </section>
+
+      <section class="term-video" id="video">
+        <VideoCard id="ESw1a-5IvR8" title="ATAK Terminal: run ATAK on your Mac or Windows machine" note="The TAK Syndicate, 16 min" />
       </section>
 
       <div class="term-grid">

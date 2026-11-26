@@ -729,6 +729,7 @@ main.map-page { padding: 0; }
 /* ATAK Terminal page */
 .term-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
 @media (max-width: 900px) { .term-grid { grid-template-columns: 1fr; } }
+.term-video { max-width: 760px; margin: 32px auto 8px; }
 .lk-yt .lk-logo img { width: 76px; height: 76px; max-height: none; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(13,23,34,.15); }
 
 /* larger brand marks: Syndicate shield in the home hero, TAKwerx shield on its page */
