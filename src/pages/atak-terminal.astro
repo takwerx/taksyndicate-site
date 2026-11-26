@@ -95,6 +95,37 @@ const GH = 'https://github.com/takwerx';
             </ul>
           </div>
         </section>
+
+        <section id="update">
+          <h2 class="section-title"><b>05</b> Update</h2>
+          <div class="prose">
+            <p>One line, in Terminal on a Mac or PowerShell on Windows:</p>
+            <pre><code>takwerx update</code></pre>
+            <p>It fetches the newest release and its tools, and keeps your ATAK, plugins, server connections and settings. If Android was running, restart it afterwards to load the new build:</p>
+            <pre><code>takwerx restart</code></pre>
+            <p>Pasting the install line again does the same thing. The icon tells you within a day when a new release is out. What changed is in the <a href={`${GH}/atak-terminal/releases`}>release notes</a>.</p>
+            <ul>
+              <li><strong>ATAK itself:</strong> the Market offers the newest ATAK-CIV, or download the APK from tak.gov and run <code>takwerx apk</code>.</li>
+              <li><strong>Plugins:</strong> update from the Market inside ATAK.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="remove">
+          <h2 class="section-title"><b>06</b> Remove</h2>
+          <div class="prose">
+            <p>To remove everything, the emulator, Android and its data, the tools, settings, logs and the icon:</p>
+            <pre><code>takwerx uninstall</code></pre>
+            <p>That also deletes everything ATAK stored: server connections, certificates, map caches. Export what you want to keep first.</p>
+            <p>Other commands that help:</p>
+            <ul>
+              <li><code>takwerx down</code> stops Android and frees the memory. All data stays.</li>
+              <li><code>takwerx reset</code> wipes Android and starts clean, but keeps ATAK Terminal installed.</li>
+              <li><code>takwerx status</code> shows what is running. <code>takwerx doctor</code> checks the computer (Mac).</li>
+            </ul>
+            <p>On Windows, open a new PowerShell window if it says “takwerx is not recognized”.</p>
+          </div>
+        </section>
       </div>
 
       <div class="cta-row" style="margin: 36px 0 60px">
